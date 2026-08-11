@@ -43,13 +43,14 @@ jobs:
       - name: Seite bauen
         run: npm run build
 
+      # Dieser Schritt schlägt fehl, solange Pages im Repository noch nicht
+      # eingeschaltet ist (siehe Hinweis ganz oben). Das automatische
+      # Einschalten per "enablement: true" wurde getestet und funktioniert
+      # hier nicht: der Workflow-Token darf keine Pages-Seite anlegen
+      # ("Resource not accessible by integration"). Der eine Klick in den
+      # Einstellungen ist deshalb wirklich nötig — danach läuft alles allein.
       - name: Pages vorbereiten
         uses: actions/configure-pages@v5
-        with:
-          # Schaltet GitHub Pages automatisch ein, falls es noch aus ist.
-          # Ohne das schlägt der Schritt mit "Get Pages site failed" fehl und
-          # man müsste die Einstellung von Hand im Browser setzen.
-          enablement: true
 
       - name: Build hochladen
         uses: actions/upload-pages-artifact@v3

@@ -29,14 +29,23 @@ Weitere Befehle:
 
 Diese Adresse ist öffentlich — du kannst sie an jeden weitergeben.
 
-Bei jedem Push auf `main` wird die Seite automatisch neu gebaut und
-veröffentlicht (dauert ein bis zwei Minuten). Den Fortschritt siehst du im
-Reiter **Actions** deines Repositorys.
+### ⚠️ Einmalig nötig: Pages einschalten
 
-**Einmalige Einrichtung**, falls die Adresse noch nicht funktioniert:
-Repository → **Settings** → **Pages** → unter „Build and deployment" die
-Quelle auf **GitHub Actions** stellen. Das lässt sich nur im Browser
-klicken, nicht per Code.
+Die Adresse funktioniert erst, wenn GitHub Pages einmal aktiviert wurde.
+Das geht **nur im Browser** — weder ich noch der Workflow dürfen diese
+Einstellung setzen (GitHub erlaubt das automatischen Zugriffen nicht).
+
+1. Repository öffnen → Reiter **Settings**
+2. Links im Menü → **Pages**
+3. Unter „Build and deployment" bei **Source** → **GitHub Actions** wählen
+4. Reiter **Actions** → letzten Lauf „Deploy to GitHub Pages" öffnen →
+   **Re-run all jobs**
+
+Danach ist die Seite nach ein bis zwei Minuten online.
+
+Ab dann läuft alles von allein: bei **jedem Push auf `main`** wird die Seite
+automatisch neu gebaut und veröffentlicht. Den Fortschritt siehst du jeweils
+im Reiter **Actions**.
 
 ---
 
