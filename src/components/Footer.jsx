@@ -41,18 +41,21 @@ export default function Footer() {
           <img src={asset(footer.logo)} alt={footer.logoAlt} width="120" height="32" />
           <p className="footer__blurb">{footer.blurb}</p>
 
-          <ul className="footer__socials">
-            {footer.socials.map((social) => (
-              <li key={social.label}>
-                <a href={social.href} target="_blank" rel="noreferrer">
-                  {social.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+          {/* Liste erscheint nur, wenn Profile hinterlegt sind */}
+          {footer.socials.length > 0 ? (
+            <ul className="footer__socials">
+              {footer.socials.map((social) => (
+                <li key={social.label}>
+                  <a href={social.href} target="_blank" rel="noreferrer">
+                    {social.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : null}
         </div>
 
-        <nav className="footer__nav" aria-label="Footer-Navigation">
+        <nav className="footer__nav" aria-label="Footer navigation">
           {footer.columns.map((column) => (
             <div className="footer__col" key={column.title}>
               <h3 className="footer__col-title">{column.title}</h3>

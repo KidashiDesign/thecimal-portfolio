@@ -157,7 +157,7 @@ export default function Hero() {
 
         <div className="hero__info">
           <div className="hero__info-item">
-            <span className="hero__info-label">Studio</span>
+            <span className="hero__info-label">{hero.artistLabel}</span>
             <span className="hero__info-value">{hero.founderName}</span>
             <span className="hero__info-value hero__info-value--dim">
               {hero.founderRole}
@@ -165,7 +165,7 @@ export default function Hero() {
           </div>
 
           <div className="hero__info-item">
-            <span className="hero__info-label">Kontakt</span>
+            <span className="hero__info-label">{hero.contactLabel}</span>
             <a className="hero__info-value" href={`mailto:${hero.contactEmail}`}>
               {hero.contactEmail}
             </a>
@@ -178,7 +178,7 @@ export default function Hero() {
           </div>
 
           <div className="hero__info-item hero__info-item--year">
-            <span className="hero__info-label">Seit</span>
+            <span className="hero__info-label">{hero.yearLabel}</span>
             <span className="hero__info-value">{hero.year}</span>
           </div>
         </div>

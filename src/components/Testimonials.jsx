@@ -110,7 +110,7 @@ export default function Testimonials() {
                 type="button"
                 className={`testimonials__avatar ${index === activeIndex ? "is-active" : ""}`}
                 onClick={() => goTo(index)}
-                aria-label={`Stimme von ${item.name} anzeigen`}
+                aria-label={`Show quote ${index + 1}`}
                 aria-pressed={index === activeIndex}
               >
                 <img src={asset(item.avatar)} alt={item.alt} loading="lazy" decoding="async" />
@@ -131,7 +131,7 @@ export default function Testimonials() {
               type="button"
               className="testimonials__arrow"
               onClick={() => goTo(activeIndex - 1)}
-              aria-label="Vorherige Stimme"
+              aria-label="Previous quote"
             >
               ←
             </button>
@@ -143,7 +143,7 @@ export default function Testimonials() {
               type="button"
               className="testimonials__arrow"
               onClick={() => goTo(activeIndex + 1)}
-              aria-label="Nächste Stimme"
+              aria-label="Next quote"
             >
               →
             </button>
