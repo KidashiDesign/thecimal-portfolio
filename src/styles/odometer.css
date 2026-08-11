@@ -1,0 +1,37 @@
+/* ODOMETER — Ziffernwalzen */
+
+.odometer {
+  display: inline-flex;
+  align-items: flex-start;
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  /* tabular-nums: alle Ziffern gleich breit — sonst zappelt die Zahl */
+  font-variant-numeric: tabular-nums;
+}
+
+/* Das Fenster: genau eine Ziffer hoch */
+.odometer__reel {
+  display: block;
+  height: 1em;
+  overflow: hidden;
+}
+
+/* Die Spalte mit allen Ziffern — sie wird von GSAP nach oben geschoben */
+.odometer__stack {
+  display: block;
+  will-change: transform;
+}
+
+.odometer__digit {
+  display: block;
+  height: 1em;
+  line-height: 1;
+  text-align: center;
+}
+
+.odometer__suffix {
+  display: block;
+  color: var(--accent);
+}

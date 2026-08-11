@@ -1,0 +1,98 @@
+/* 9. CTA */
+
+.cta {
+  border-top: 1px solid var(--line);
+}
+
+.cta__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 5vh, 3.5rem);
+}
+
+.cta__headline {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 16vw, 14rem);
+  font-weight: 800;
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+.cta__headline-line {
+  display: block;
+}
+
+.cta__headline-line--bottom {
+  text-align: right;
+  color: var(--accent);
+}
+
+.cta__row {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.cta__text {
+  max-width: 40ch;
+  color: var(--ink-dim);
+  font-size: var(--fs-sm);
+}
+
+.cta__button {
+  align-self: flex-start;
+}
+
+/* ---- Bild-Grid ------------------------------------------------------------ */
+.cta__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
+  /* start statt stretch: sonst zieht die höchste Kachel die anderen mit
+     und unter deren Bildern bleibt eine graue Fläche stehen. */
+  align-items: start;
+}
+
+.cta__tile {
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--bg-soft);
+}
+
+.cta__tile img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Hover: leichter Zoom */
+.cta__tile:hover img {
+  transform: scale(1.06);
+}
+
+/* ---- ab Tablet ------------------------------------------------------------ */
+@media (min-width: 768px) {
+  .cta__row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+  }
+
+  .cta__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Versetzte Anordnung — wirkt lebendiger als eine gerade Reihe.
+     Bewusst über margin-top statt transform: GSAP animiert beim Einblenden
+     ebenfalls transform und würde einen CSS-Versatz überschreiben. */
+  .cta__tile:nth-child(even) {
+    margin-top: clamp(1rem, 3vw, 3rem);
+  }
+}

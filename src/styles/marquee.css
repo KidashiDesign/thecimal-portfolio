@@ -1,0 +1,39 @@
+/* 7. MARQUEE */
+
+.marquee {
+  overflow: hidden;
+  padding: clamp(2.5rem, 7vh, 5rem) 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  /* Cursor signalisiert: hier passiert etwas beim Drüberfahren */
+  cursor: default;
+}
+
+.marquee__row {
+  display: flex;
+  align-items: center;
+  /* width: max-content sorgt dafür, dass beide Kopien nebeneinander
+     stehen und nicht umbrechen. */
+  width: max-content;
+  will-change: transform;
+}
+
+.marquee__item {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 8vw, 7rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.marquee__sep {
+  color: var(--accent);
+  font-size: 0.45em;
+  margin: 0 clamp(1.5rem, 4vw, 3.5rem);
+  /* Der Stern soll optisch nicht dominieren */
+  transform: translateY(-0.15em);
+}

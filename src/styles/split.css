@@ -1,0 +1,25 @@
+/* Styles für die Text-Zerlegung aus src/components/Split.jsx */
+
+.split {
+  display: inline;
+}
+
+/* Buchstaben-Variante -------------------------------------------------------
+   Die "Maske" ist ein Fenster mit overflow:hidden. Der Buchstabe darin wird
+   von unten hereingeschoben — dadurch wirkt es, als käme er aus dem Nichts. */
+.split-char-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* etwas Luft, damit Unterlängen (g, y, p) nicht abgeschnitten werden */
+  padding-bottom: 0.08em;
+}
+
+.split-char {
+  display: inline-block;
+}
+
+/* Wort-Variante ------------------------------------------------------------- */
+.split-word {
+  display: inline-block;
+}

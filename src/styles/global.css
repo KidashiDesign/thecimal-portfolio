@@ -1,0 +1,197 @@
+/* ==========================================================================
+   GLOBAL — Farben, Schrift, Grundraster
+   ==========================================================================
+   Wenn du das Aussehen der ganzen Seite ändern willst, fang HIER an.
+   Die Werte unter :root gelten überall.
+   ========================================================================== */
+
+:root {
+  /* ---- Farben ------------------------------------------------------------
+     Einfach die Hex-Werte tauschen — alle Sektionen ziehen automatisch nach. */
+  --bg: #0a0a0b; /* Seitenhintergrund */
+  --bg-soft: #131316; /* Karten, abgesetzte Flächen */
+  --ink: #f4f1ea; /* Haupttext */
+  --ink-dim: #8d8981; /* Nebentext, Labels */
+  --line: rgba(244, 241, 234, 0.14); /* Trennlinien */
+  --accent: #cdff4f; /* Akzentfarbe (Buttons, aktive Tabs) */
+  --accent-ink: #0a0a0b; /* Textfarbe AUF der Akzentfarbe */
+
+  /* ---- Schrift -----------------------------------------------------------
+     Eigene Webfont einbinden? Font-Datei nach public/fonts/ legen, in
+     index.html per @font-face laden und den Namen hier vorne eintragen. */
+  --font-display: "Helvetica Neue", "Arial Black", Inter, system-ui, sans-serif;
+  --font-body: "Helvetica Neue", Inter, system-ui, -apple-system, sans-serif;
+
+  /* ---- Abstände ----------------------------------------------------------
+     clamp(min, flexibel, max) = wächst mit der Fensterbreite mit. */
+  --gutter: clamp(1.25rem, 4vw, 4rem); /* Seitenrand */
+  --section-y: clamp(5rem, 12vh, 11rem); /* Abstand oben/unten je Sektion */
+  --radius: 2px;
+
+  /* ---- Schriftgrößen ---------------------------------------------------- */
+  --fs-huge: clamp(4.5rem, 22vw, 20rem); /* Hero-Headline */
+  --fs-xl: clamp(2.5rem, 7vw, 6rem); /* Sektions-Headlines */
+  --fs-lg: clamp(1.75rem, 3.4vw, 3rem);
+  --fs-md: clamp(1.05rem, 1.5vw, 1.375rem);
+  --fs-sm: 0.875rem;
+  --fs-xs: 0.75rem;
+
+  --header-h: 76px;
+}
+
+/* ---- Reset ---------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  /* Wichtig für horizontales Pinning: verhindert seitliches Wackeln. */
+  overflow-x: hidden;
+}
+
+/* Lenis übernimmt das Scrollen — diese Klassen setzt das Paket selbst. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+/* ---- Wiederverwendbare Bausteine ------------------------------------------ */
+
+/* Standard-Sektion: voller Seitenrand + großzügiger vertikaler Abstand */
+.section {
+  position: relative;
+  padding: var(--section-y) var(--gutter);
+}
+
+/* Kleines Label über einer Headline ("Was wir tun", "Studio", …) */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 2.5rem;
+  height: 1px;
+  background: currentColor;
+}
+
+/* Große Sektions-Headline */
+.headline {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Button mit Akzentfarbe */
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.1rem 2rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), filter 0.3s;
+}
+
+.button:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.08);
+}
+
+/* Nur für Screenreader sichtbar */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Sichtbarer Fokusrahmen — bitte nicht entfernen, das ist Barrierefreiheit. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Bei "Bewegung reduzieren" alle CSS-Übergänge auf ein Minimum kürzen.
+   Die GSAP-Animationen werden zusätzlich im JS abgeschaltet. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

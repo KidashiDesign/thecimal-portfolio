@@ -1,0 +1,190 @@
+/* 5. MEILENSTEINE
+   --------------------------------------------------------------------------
+   Grundlayout = Mobile: alles steht untereinander.
+   Das horizontale, gepinnte Layout kommt erst ab 768px UND nur, wenn der
+   Nutzer keine reduzierte Bewegung eingestellt hat. Genau dieselbe
+   Bedingung steht auch im JavaScript (Milestones.jsx).
+   -------------------------------------------------------------------------- */
+
+.milestones {
+  position: relative;
+  padding: var(--section-y) 0;
+  background: var(--bg-soft);
+  overflow: hidden;
+}
+
+.milestones__head {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 0 var(--gutter);
+  margin-bottom: clamp(2.5rem, 6vh, 4rem);
+}
+
+.milestones__headline {
+  max-width: 14ch;
+}
+
+.milestones__viewport {
+  padding: 0 var(--gutter);
+}
+
+.milestones__track {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+/* ---- einzelnes Panel ------------------------------------------------------ */
+.milestone {
+  display: grid;
+  gap: 2rem;
+}
+
+.milestone__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.milestone__index {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.18em;
+  color: var(--ink-dim);
+}
+
+/* Größe der rollenden Zahl */
+.milestone__number {
+  font-size: clamp(4.5rem, 14vw, 9rem);
+  color: var(--ink);
+}
+
+.milestone__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.milestone__year {
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+.milestone__label {
+  font-size: var(--fs-md);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.milestone__text {
+  font-size: var(--fs-sm);
+  color: var(--ink-dim);
+  max-width: 42ch;
+}
+
+.milestone__figure {
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+
+.milestone__figure img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+/* ---- Fortschrittsbalken --------------------------------------------------- */
+.milestones__progress {
+  display: none;
+  height: 2px;
+  margin: 3rem var(--gutter) 0;
+  background: var(--line);
+}
+
+.milestones__progress-bar {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* ==========================================================================
+   HORIZONTALES LAYOUT — nur ab Tablet und ohne reduzierte Bewegung
+   ========================================================================== */
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .milestones {
+    /* Die Sektion füllt genau einen Bildschirm — sie wird ja gepinnt. */
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: calc(var(--header-h) + 2rem) 0 2rem;
+  }
+
+  .milestones__viewport {
+    /* Der Track ist breiter als das Fenster — hier wird abgeschnitten. */
+    overflow: hidden;
+    padding: 0 0 0 var(--gutter);
+  }
+
+  .milestones__track {
+    flex-direction: row;
+    gap: clamp(2rem, 4vw, 4rem);
+    /* damit die letzte Karte nicht am Rand klebt */
+    padding-right: var(--gutter);
+    width: max-content;
+    will-change: transform;
+  }
+
+  .milestone {
+    /* Zwei Panels passen nebeneinander ins Bild — das zeigt dem Nutzer,
+       dass es seitwärts weitergeht. */
+    width: clamp(30rem, 44vw, 44rem);
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: 2rem;
+  }
+
+  .milestone__figure img {
+    aspect-ratio: 16 / 9;
+  }
+
+  .milestones__progress {
+    display: block;
+  }
+}
+
+/* Reduzierte Bewegung auf großen Bildschirmen: Die Panels stehen
+   untereinander (kein Pinning). Damit die Bilder dabei nicht bildschirmfüllend
+   werden, hier ein ruhiges zweispaltiges Layout. */
+@media (min-width: 768px) and (prefers-reduced-motion: reduce) {
+  .milestones__track {
+    gap: 5rem;
+  }
+
+  .milestone {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 3rem;
+  }
+}
+
+/* Große Bildschirme: Text und Bild nebeneinander im Panel */
+@media (min-width: 1200px) and (prefers-reduced-motion: no-preference) {
+  .milestone {
+    width: clamp(38rem, 46vw, 50rem);
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+  }
+
+  .milestone__figure img {
+    aspect-ratio: 3 / 4;
+  }
+}

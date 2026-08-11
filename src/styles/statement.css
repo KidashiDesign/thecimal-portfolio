@@ -1,0 +1,32 @@
+/* 3. STATEMENT */
+
+.statement {
+  /* Extra Luft, damit die Scroll-Strecke für den Wort-Effekt lang genug ist */
+  padding-top: calc(var(--section-y) * 1.2);
+  padding-bottom: calc(var(--section-y) * 1.2);
+}
+
+.statement__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 5vh, 3.5rem);
+}
+
+.statement__text {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4.6vw, 4rem);
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+.statement__meta {
+  align-self: flex-end;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}

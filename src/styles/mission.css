@@ -1,0 +1,177 @@
+/* 4. MISSION / VISION */
+
+.mission__inner {
+  display: grid;
+  gap: clamp(3rem, 8vw, 6rem);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.mission__col {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.75rem, 4vh, 2.75rem);
+}
+
+.mission__head {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+/* ---- Tabs ----------------------------------------------------------------- */
+.mission__tabs {
+  display: inline-flex;
+  gap: 0.35rem;
+  padding: 0.35rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  align-self: flex-start;
+}
+
+.mission__tab {
+  padding: 0.7rem 1.6rem;
+  border-radius: 999px;
+  font-size: var(--fs-sm);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  transition: background-color 0.35s, color 0.35s;
+}
+
+.mission__tab:hover {
+  color: var(--ink);
+}
+
+.mission__tab.is-active {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* ---- Panels (übereinander gestapelt) --------------------------------------
+   Alle Panels liegen in derselben Raster-Zelle. So springt das Layout beim
+   Crossfade nicht, und die Höhe richtet sich nach dem längsten Text. */
+.mission__panels {
+  display: grid;
+}
+
+.mission__panel {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 46ch;
+}
+
+/* Startzustand vor dem ersten GSAP-Durchlauf: nur der aktive Block ist
+   sichtbar. Danach übernimmt GSAP per Inline-Style. */
+.mission__panel:not(.is-active) {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.mission__panel-headline {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+.mission__panel-body {
+  color: var(--ink-dim);
+}
+
+.mission__points {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--line);
+  font-size: var(--fs-sm);
+}
+
+.mission__points li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+}
+
+.mission__points li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+/* ---- Bild-Cluster ----------------------------------------------------------
+   Drei überlappende Bilder. Auf Mobile stehen sie als schlichtes Raster
+   nebeneinander, ab Tablet werden sie frei positioniert. */
+.mission__cluster {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.mission__figure {
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--bg-soft);
+}
+
+.mission__figure--1 {
+  grid-column: span 2;
+}
+
+.mission__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform; /* nur hier nötig: die Bilder bewegen sich dauerhaft */
+}
+
+/* ---- ab Tablet ------------------------------------------------------------ */
+@media (min-width: 768px) {
+  .mission__inner {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+
+  /* Freie Anordnung: die Bilder überlappen sich versetzt. */
+  .mission__cluster {
+    display: block;
+    aspect-ratio: 4 / 5;
+  }
+
+  .mission__figure {
+    position: absolute;
+  }
+
+  .mission__figure--1 {
+    top: 0;
+    left: 0;
+    width: 62%;
+    aspect-ratio: 3 / 4;
+    z-index: 1;
+  }
+
+  .mission__figure--2 {
+    top: 26%;
+    right: 0;
+    width: 46%;
+    aspect-ratio: 4 / 5;
+    z-index: 3;
+  }
+
+  .mission__figure--3 {
+    bottom: 0;
+    left: 14%;
+    width: 40%;
+    aspect-ratio: 1 / 1;
+    z-index: 2;
+  }
+}

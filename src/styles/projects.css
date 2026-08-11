@@ -1,0 +1,207 @@
+/* 6. PROJEKTE */
+
+.projects__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 5vh, 3.5rem);
+}
+
+.projects__head {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ---- Tabs ----------------------------------------------------------------- */
+.projects__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.projects__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: var(--fs-sm);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  transition: color 0.35s, border-color 0.35s, background-color 0.35s;
+}
+
+.projects__tab:hover {
+  color: var(--ink);
+  border-color: var(--ink-dim);
+}
+
+.projects__tab.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.projects__tab-num {
+  font-size: var(--fs-xs);
+  opacity: 0.6;
+}
+
+/* ---- Bühne ---------------------------------------------------------------- */
+.projects__stage {
+  display: grid;
+  gap: 2rem;
+}
+
+/* Alle Bilder liegen in derselben Raster-Zelle übereinander */
+.projects__slides {
+  display: grid;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--bg-soft);
+}
+
+.projects__slide {
+  grid-area: 1 / 1;
+}
+
+/* Vor dem ersten GSAP-Durchlauf: nur das aktive Bild zeigen */
+.projects__slide:not(.is-active) {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.projects__slide img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.projects__info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.projects__meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.projects__meta-item dt {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 0.4rem;
+}
+
+.projects__meta-item dd {
+  margin: 0;
+  font-size: var(--fs-sm);
+}
+
+.projects__description {
+  font-size: var(--fs-sm);
+  color: var(--ink-dim);
+  max-width: 46ch;
+}
+
+.projects__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  align-self: flex-start;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--line);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.35s, border-color 0.35s, gap 0.35s;
+}
+
+.projects__link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  gap: 1rem;
+}
+
+/* ---- Thumbnails ----------------------------------------------------------- */
+.projects__strip {
+  display: grid;
+  grid-auto-flow: column;
+  /* Feste Obergrenze: der Strip soll klein bleiben und nicht auf die
+     volle Breite auseinanderlaufen, egal wie viele Projekte es gibt. */
+  grid-auto-columns: minmax(130px, 190px);
+  justify-content: start;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  /* saubere Scroll-Optik auf Touch-Geräten */
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.projects__thumb {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius);
+  scroll-snap-align: start;
+  opacity: 0.55;
+  transition: opacity 0.35s;
+}
+
+.projects__thumb img {
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.projects__thumb:hover {
+  opacity: 1;
+}
+
+/* leichter Zoom beim Hover */
+.projects__thumb:hover img {
+  transform: scale(1.07);
+}
+
+.projects__thumb.is-active {
+  opacity: 1;
+  outline: 1px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.projects__thumb-label {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.6rem;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+}
+
+/* ---- ab Tablet ------------------------------------------------------------ */
+@media (min-width: 900px) {
+  .projects__stage {
+    grid-template-columns: 1.6fr 1fr;
+    gap: 3rem;
+    align-items: end;
+  }
+
+  .projects__meta {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}

@@ -1,0 +1,103 @@
+/* 10. FOOTER */
+
+.footer {
+  padding: clamp(3rem, 8vh, 6rem) var(--gutter) 2rem;
+  border-top: 1px solid var(--line);
+  background: var(--bg-soft);
+}
+
+.footer__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 5rem);
+}
+
+.footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.footer__brand img {
+  width: 120px;
+  height: auto;
+}
+
+.footer__blurb {
+  font-size: var(--fs-sm);
+  color: var(--ink-dim);
+  max-width: 32ch;
+}
+
+.footer__socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  font-size: var(--fs-sm);
+}
+
+.footer__socials a:hover {
+  color: var(--accent);
+}
+
+.footer__nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 2rem;
+}
+
+.footer__col-title {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.footer__col ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  font-size: var(--fs-sm);
+}
+
+.footer__col a {
+  transition: color 0.3s;
+}
+
+.footer__col a:hover {
+  color: var(--accent);
+}
+
+/* ---- unterste Zeile ------------------------------------------------------- */
+.footer__bottom {
+  max-width: 1400px;
+  margin: clamp(3rem, 7vh, 5rem) auto 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  font-size: var(--fs-xs);
+  color: var(--ink-dim);
+}
+
+.footer__legal {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer__legal a:hover {
+  color: var(--ink);
+}
+
+/* ---- ab Tablet ------------------------------------------------------------ */
+@media (min-width: 768px) {
+  .footer__inner {
+    grid-template-columns: 1fr 1.2fr;
+  }
+}

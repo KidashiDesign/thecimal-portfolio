@@ -1,0 +1,164 @@
+/* 2. HERO */
+
+.hero {
+  position: relative;
+  min-height: 100svh; /* svh = stabile Höhe auf Mobile trotz Browserleiste */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: calc(var(--header-h) + 2rem) var(--gutter) clamp(1.5rem, 4vh, 3rem);
+  overflow: hidden;
+}
+
+/* ---- Hintergrund ---------------------------------------------------------- */
+.hero__media {
+  position: absolute;
+  /* etwas größer als der Bildschirm, damit beim Parallax kein Rand entsteht */
+  inset: -12% 0;
+  z-index: 0;
+  will-change: transform; /* sparsam einsetzen: nur bei dauerhaft bewegten Ebenen */
+}
+
+.hero__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Dunkler Verlauf, damit die Schrift auf jedem Bild lesbar bleibt */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+      to top,
+      rgba(10, 10, 11, 0.92) 0%,
+      rgba(10, 10, 11, 0.35) 45%,
+      rgba(10, 10, 11, 0.6) 100%
+    );
+}
+
+/* ---- Inhalt --------------------------------------------------------------- */
+.hero__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 4vh, 3rem);
+}
+
+.hero__tagline {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+/* ---- Riesen-Headline ------------------------------------------------------ */
+.hero__headline {
+  font-family: var(--font-display);
+  font-size: var(--fs-huge);
+  font-weight: 800;
+  line-height: 0.82;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+.hero__headline-line {
+  display: block;
+}
+
+/* Die zweite Zeile sitzt rechtsbündig — das erzeugt die typische
+   versetzte Anordnung großer Agentur-Headlines. */
+.hero__headline-line--bottom {
+  text-align: right;
+}
+
+/* ---- Infoblöcke ----------------------------------------------------------- */
+.hero__info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.hero__info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: var(--fs-sm);
+}
+
+.hero__info-label {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 0.4rem;
+}
+
+.hero__info-value--dim {
+  color: var(--ink-dim);
+}
+
+a.hero__info-value:hover {
+  color: var(--accent);
+}
+
+/* ---- Scroll-Indikator ----------------------------------------------------- */
+.hero__scroll {
+  /* Auf schmalen Bildschirmen würde der Hinweis die Infoblöcke überlagern —
+     und dort weiß ohnehin jeder, dass gescrollt wird. */
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1rem, 3vh, 2rem);
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.hero__scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--ink-dim), transparent);
+  /* kleine Dauerschleife, damit der Hinweis "lebt" */
+  animation: hero-scroll-hint 2.2s ease-in-out infinite;
+  transform-origin: top;
+}
+
+@keyframes hero-scroll-hint {
+  0%,
+  100% {
+    transform: scaleY(0.4);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+/* ---- ab Tablet ------------------------------------------------------------ */
+@media (min-width: 768px) {
+  .hero__scroll {
+    display: flex;
+  }
+
+  .hero__info {
+    grid-template-columns: repeat(4, 1fr);
+    align-items: start;
+  }
+
+  .hero__info-item--year {
+    grid-column: 4;
+    text-align: right;
+  }
+}
