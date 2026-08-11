@@ -73,6 +73,12 @@ Ende der URL sind Breite und Höhe), sonst verschiebt sich das Layout.
 Dateiname, ähnliches Seitenverhältnis (ca. 120 × 32). Das Logo erscheint dann
 automatisch in Kopfzeile und Footer.
 
+⚠️ **Die Farbe muss im SVG selbst stehen.** Das Logo wird als Bild eingebunden
+und erbt deshalb keine Farbe von der Seite. Ein SVG mit `fill="currentColor"`
+wird schwarz dargestellt und ist auf dem dunklen Hintergrund unsichtbar — im
+Platzhalter steht daher fest `fill="#f4f1ea"`. Nimm für dein Logo eine helle
+Variante (oder eine dunkle, falls du den Hintergrund auf hell umstellst).
+
 ### Hero-Video ändern
 
 Aktuell ist **kein** Video hinterlegt. Solange keins da ist, zeigt der Hero

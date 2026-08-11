@@ -1,8 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 32" width="120" height="32" role="img" aria-label="Platzhalter Logo">
   <!-- Platzhalter-Logo. Ersetze diese Datei durch dein eigenes SVG,
-       behalte am besten Name und Seitenverhältnis (ca. 120x32) bei. -->
-  <rect x="0" y="6" width="20" height="20" fill="currentColor"/>
-  <text x="28" y="23" font-family="Helvetica Neue, Arial, sans-serif"
-        font-size="20" font-weight="700" letter-spacing="1"
-        fill="currentColor">ZANO</text>
+       behalte am besten Name und Seitenverhältnis (ca. 120x32) bei.
+
+       WICHTIG: Die Farbe muss IM SVG stehen (hier: fill="#f4f1ea").
+       Ein per <img> eingebundenes SVG erbt keine Farbe von der Seite —
+       "currentColor" würde hier schlicht schwarz ergeben und wäre auf dem
+       dunklen Hintergrund unsichtbar. Wenn du später auf einen hellen
+       Hintergrund wechselst, hier auf eine dunkle Farbe umstellen. -->
+  <g fill="#f4f1ea">
+    <rect x="0" y="6" width="20" height="20"/>
+    <text x="28" y="23" font-family="Helvetica Neue, Arial, sans-serif"
+          font-size="20" font-weight="700" letter-spacing="1">ZANO</text>
+  </g>
 </svg>
