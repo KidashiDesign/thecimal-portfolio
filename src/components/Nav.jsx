@@ -140,11 +140,11 @@ export default function Nav() {
     <div ref={rootRef}>
       <header className="nav">
         <div className="nav__bar">
-          <a className="nav__logo" href="#hero" aria-label="Zur Startseite">
+          <a className="nav__logo" href="#hero" aria-label="Back to start">
             <img src={asset(nav.logo)} alt={nav.logoAlt} width="120" height="32" />
           </a>
 
-          <nav className="nav__inline" aria-label="Hauptnavigation">
+          <nav className="nav__inline" aria-label="Main navigation">
             {nav.inlineLinks.map((link) => (
               <a key={link.href + link.label} href={link.href}>
                 {link.label}

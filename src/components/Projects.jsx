@@ -15,6 +15,21 @@ import { projects } from "../content";
 import { asset } from "../lib/asset";
 import "../styles/projects.css";
 
+/* Meta-Zeilen (Ort, Jahr, Kategorie, Rolle, Medium, Tools) eines Projekts.
+   Felder ohne Inhalt fallen raus — Beschriftungen kommen aus content.js. */
+function metaFor(item) {
+  const labels = projects.metaLabels;
+
+  return [
+    { label: labels.client, value: item.client },
+    { label: labels.year, value: item.year },
+    { label: labels.type, value: item.type },
+    { label: labels.role, value: item.role },
+    { label: labels.medium, value: item.medium },
+    { label: labels.tools, value: (item.tools || []).join(", ") },
+  ].filter((entry) => entry.value);
+}
+
 export default function Projects() {
   const rootRef = useRef(null);
   const firstRunRef = useRef(true);
@@ -142,32 +157,31 @@ export default function Projects() {
           </div>
 
           <div className="projects__info">
+            {/* Leere Felder (z. B. unbekanntes Jahr) werden übersprungen,
+                statt eine Zeile ohne Wert zu rendern. */}
             <dl className="projects__meta">
-              <div className="projects__meta-item">
-                <dt>Client</dt>
-                <dd>{active.client}</dd>
-              </div>
-              <div className="projects__meta-item">
-                <dt>Jahr</dt>
-                <dd>{active.year}</dd>
-              </div>
-              <div className="projects__meta-item">
-                <dt>Typ</dt>
-                <dd>{active.type}</dd>
-              </div>
+              {metaFor(active).map(({ label, value }) => (
+                <div className="projects__meta-item" key={label}>
+                  <dt>{label}</dt>
+                  <dd>{value}</dd>
+                </div>
+              ))}
             </dl>
 
             <p className="projects__description">{active.description}</p>
 
-            <a
-              className="projects__link"
-              href={active.href}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {projects.linkLabel}
-              <span aria-hidden="true">↗</span>
-            </a>
+            {/* Link nur, wenn eine URL hinterlegt ist */}
+            {active.href ? (
+              <a
+                className="projects__link"
+                href={active.href}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {active.linkLabel || projects.linkLabel}
+                <span aria-hidden="true">↗</span>
+              </a>
+            ) : null}
           </div>
         </div>
 
@@ -179,7 +193,7 @@ export default function Projects() {
               type="button"
               className={`projects__thumb ${index === activeIndex ? "is-active" : ""}`}
               onClick={() => setActiveIndex(index)}
-              aria-label={`${item.tabLabel} anzeigen`}
+              aria-label={`Show ${item.tabLabel}`}
             >
               <img src={asset(item.thumb)} alt="" loading="lazy" decoding="async" />
               <span className="projects__thumb-label">{item.tabLabel}</span>

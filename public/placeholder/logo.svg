@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 32" width="120" height="32" role="img" aria-label="Platzhalter Logo">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 32" width="120" height="32" role="img" aria-label="Thecimal">
   <!-- Platzhalter-Logo. Ersetze diese Datei durch dein eigenes SVG,
        behalte am besten Name und Seitenverhältnis (ca. 120x32) bei.
 
@@ -10,6 +10,6 @@
   <g fill="#f4f1ea">
     <rect x="0" y="6" width="20" height="20"/>
     <text x="28" y="23" font-family="Helvetica Neue, Arial, sans-serif"
-          font-size="20" font-weight="700" letter-spacing="1">ZANO</text>
+          font-size="14" font-weight="700" letter-spacing="1">THECIMAL</text>
   </g>
 </svg>
