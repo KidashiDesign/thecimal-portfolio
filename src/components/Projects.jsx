@@ -12,6 +12,7 @@
 import { useRef, useState } from "react";
 import { gsap, useGSAP, MEDIA } from "../lib/gsap";
 import { projects } from "../content";
+import { asset } from "../lib/asset";
 import "../styles/projects.css";
 
 export default function Projects() {
@@ -135,7 +136,7 @@ export default function Projects() {
                 className={`projects__slide ${index === activeIndex ? "is-active" : ""}`}
                 key={item.id}
               >
-                <img src={item.image} alt={item.alt} loading="lazy" decoding="async" />
+                <img src={asset(item.image)} alt={item.alt} loading="lazy" decoding="async" />
               </figure>
             ))}
           </div>
@@ -180,7 +181,7 @@ export default function Projects() {
               onClick={() => setActiveIndex(index)}
               aria-label={`${item.tabLabel} anzeigen`}
             >
-              <img src={item.thumb} alt="" loading="lazy" decoding="async" />
+              <img src={asset(item.thumb)} alt="" loading="lazy" decoding="async" />
               <span className="projects__thumb-label">{item.tabLabel}</span>
             </button>
           ))}

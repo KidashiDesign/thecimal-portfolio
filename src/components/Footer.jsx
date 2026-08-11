@@ -10,6 +10,7 @@
 import { useRef } from "react";
 import { gsap, useGSAP, MEDIA } from "../lib/gsap";
 import { footer } from "../content";
+import { asset } from "../lib/asset";
 import "../styles/footer.css";
 
 export default function Footer() {
@@ -37,7 +38,7 @@ export default function Footer() {
     <footer className="footer" ref={rootRef}>
       <div className="footer__inner">
         <div className="footer__brand">
-          <img src={footer.logo} alt={footer.logoAlt} width="120" height="32" />
+          <img src={asset(footer.logo)} alt={footer.logoAlt} width="120" height="32" />
           <p className="footer__blurb">{footer.blurb}</p>
 
           <ul className="footer__socials">

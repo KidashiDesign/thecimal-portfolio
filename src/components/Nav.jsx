@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { gsap, useGSAP } from "../lib/gsap";
 import { useReducedMotion } from "../lib/motion";
 import { nav } from "../content";
+import { asset } from "../lib/asset";
 import "../styles/nav.css";
 
 export default function Nav() {
@@ -140,7 +141,7 @@ export default function Nav() {
       <header className="nav">
         <div className="nav__bar">
           <a className="nav__logo" href="#hero" aria-label="Zur Startseite">
-            <img src={nav.logo} alt={nav.logoAlt} width="120" height="32" />
+            <img src={asset(nav.logo)} alt={nav.logoAlt} width="120" height="32" />
           </a>
 
           <nav className="nav__inline" aria-label="Hauptnavigation">

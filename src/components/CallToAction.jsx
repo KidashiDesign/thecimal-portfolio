@@ -12,6 +12,7 @@ import { useRef } from "react";
 import { gsap, useGSAP, MEDIA } from "../lib/gsap";
 import { SplitChars } from "./Split";
 import { cta } from "../content";
+import { asset } from "../lib/asset";
 import "../styles/cta.css";
 
 export default function CallToAction() {
@@ -97,7 +98,7 @@ export default function CallToAction() {
         <div className="cta__grid">
           {cta.images.map((image) => (
             <figure className="cta__tile" key={image.src}>
-              <img src={image.src} alt={image.alt} loading="lazy" decoding="async" />
+              <img src={asset(image.src)} alt={image.alt} loading="lazy" decoding="async" />
             </figure>
           ))}
         </div>

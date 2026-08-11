@@ -15,6 +15,7 @@ import { useRef } from "react";
 import { gsap, ScrollTrigger, useGSAP, MEDIA } from "../lib/gsap";
 import Odometer, { rollOdometer } from "./Odometer";
 import { milestones } from "../content";
+import { asset } from "../lib/asset";
 import "../styles/milestones.css";
 
 export default function Milestones() {
@@ -178,7 +179,7 @@ export default function Milestones() {
               </div>
 
               <figure className="milestone__figure milestone__reveal">
-                <img src={panel.image} alt={panel.alt} loading="lazy" decoding="async" />
+                <img src={asset(panel.image)} alt={panel.alt} loading="lazy" decoding="async" />
               </figure>
             </article>
           ))}

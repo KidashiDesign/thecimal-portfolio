@@ -12,6 +12,7 @@
 import { useRef, useState } from "react";
 import { gsap, useGSAP, MEDIA } from "../lib/gsap";
 import { testimonials } from "../content";
+import { asset } from "../lib/asset";
 import "../styles/testimonials.css";
 
 export default function Testimonials() {
@@ -112,7 +113,7 @@ export default function Testimonials() {
                 aria-label={`Stimme von ${item.name} anzeigen`}
                 aria-pressed={index === activeIndex}
               >
-                <img src={item.avatar} alt={item.alt} loading="lazy" decoding="async" />
+                <img src={asset(item.avatar)} alt={item.alt} loading="lazy" decoding="async" />
               </button>
             ))}
           </div>

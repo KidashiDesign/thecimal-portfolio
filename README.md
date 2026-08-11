@@ -23,6 +23,23 @@ Weitere Befehle:
 
 ---
 
+## Live-Seite
+
+**https://kidashidesign.github.io/Thecimal/**
+
+Diese Adresse ist öffentlich — du kannst sie an jeden weitergeben.
+
+Bei jedem Push auf `main` wird die Seite automatisch neu gebaut und
+veröffentlicht (dauert ein bis zwei Minuten). Den Fortschritt siehst du im
+Reiter **Actions** deines Repositorys.
+
+**Einmalige Einrichtung**, falls die Adresse noch nicht funktioniert:
+Repository → **Settings** → **Pages** → unter „Build and deployment" die
+Quelle auf **GitHub Actions** stellen. Das lässt sich nur im Browser
+klicken, nicht per Code.
+
+---
+
 ## 👉 Wo tausche ich Texte und Bilder aus?
 
 **In `src/content.js` — und sonst nirgends.**
@@ -66,6 +83,10 @@ der Seite das Bild sitzt. So ersetzt du es:
 
 Behalte möglichst das Seitenverhältnis des Platzhalters bei (die zwei Zahlen am
 Ende der URL sind Breite und Höhe), sonst verschiebt sich das Layout.
+
+> Der führende Schrägstrich funktioniert lokal **und** auf der Live-Seite:
+> `src/lib/asset.js` setzt automatisch den richtigen Anfang davor. Du musst
+> dich also nicht um den Unterordner `/Thecimal/` kümmern.
 
 ### Logo ändern
 

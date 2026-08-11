@@ -19,6 +19,7 @@ import { useRef } from "react";
 import { gsap, useGSAP, MEDIA } from "../lib/gsap";
 import { SplitChars } from "./Split";
 import { hero } from "../content";
+import { asset } from "../lib/asset";
 import "../styles/hero.css";
 
 export default function Hero() {
@@ -128,8 +129,8 @@ export default function Hero() {
       <div className="hero__media">
         <video
           className="hero__video"
-          src={hero.backgroundVideo}
-          poster={hero.posterImage}
+          src={asset(hero.backgroundVideo)}
+          poster={asset(hero.posterImage)}
           autoPlay
           muted
           loop

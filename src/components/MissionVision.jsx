@@ -13,6 +13,7 @@
 import { useRef, useState } from "react";
 import { gsap, useGSAP, MEDIA } from "../lib/gsap";
 import { missionVision, missionImages } from "../content";
+import { asset } from "../lib/asset";
 import "../styles/mission.css";
 
 export default function MissionVision() {
@@ -184,7 +185,7 @@ export default function MissionVision() {
             <figure className={`mission__figure mission__figure--${index + 1}`} key={image.src}>
               <img
                 className="mission__image"
-                src={image.src}
+                src={asset(image.src)}
                 alt={image.alt}
                 loading="lazy"
                 decoding="async"
