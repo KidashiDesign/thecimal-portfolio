@@ -45,6 +45,11 @@ jobs:
 
       - name: Pages vorbereiten
         uses: actions/configure-pages@v5
+        with:
+          # Schaltet GitHub Pages automatisch ein, falls es noch aus ist.
+          # Ohne das schlägt der Schritt mit "Get Pages site failed" fehl und
+          # man müsste die Einstellung von Hand im Browser setzen.
+          enablement: true
 
       - name: Build hochladen
         uses: actions/upload-pages-artifact@v3
