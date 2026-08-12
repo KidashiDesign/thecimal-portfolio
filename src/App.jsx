@@ -10,6 +10,7 @@
    -------------------------------------------------------------------------- */
 
 import { useEffect } from "react";
+import GenerativeBackground from "./components/GenerativeBackground";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
 import Statement from "./components/Statement";
@@ -39,6 +40,7 @@ export default function App() {
 
   return (
     <>
+      <GenerativeBackground />
       <Nav />
 
       <main>
