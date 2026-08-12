@@ -1,25 +1,18 @@
 /* --------------------------------------------------------------------------
    2. HERO
    --------------------------------------------------------------------------
-   - vollflächiges Hintergrundvideo (stumm, Loop, Autoplay)
+   - Hintergrund: die generative Wellen-Animation (App.jsx) scheint durch
    - riesige zweizeilige Headline, die buchstabenweise von unten einfliegt
    - kleine Infoblöcke (Name, Rolle, Kontakt, Jahr) folgen zeitversetzt
    - Scroll-Indikator unten, der beim Scrollen ausfadet
 
-   Texte/Bilder: src/content.js  →  export const hero
-
-   HINWEIS ZUM VIDEO
-   Solange unter dem Pfad `hero.backgroundVideo` keine Datei liegt, zeigt der
-   Browser automatisch das Standbild aus `hero.posterImage`. Du kannst also
-   erst mal ohne Video arbeiten und später einfach die mp4-Datei nach
-   public/placeholder/ legen.
+   Texte: src/content.js  →  export const hero
    -------------------------------------------------------------------------- */
 
 import { useRef } from "react";
 import { gsap, useGSAP, MEDIA } from "../lib/gsap";
 import { SplitChars } from "./Split";
 import { hero } from "../content";
-import { asset } from "../lib/asset";
 import "../styles/hero.css";
 
 export default function Hero() {
@@ -34,13 +27,6 @@ export default function Hero() {
         const intro = gsap.timeline({ delay: 0.2 });
 
         intro
-          // Hintergrund langsam aufblenden und minimal herauszoomen
-          .from(".hero__media", {
-            autoAlpha: 0,
-            scale: 1.12,
-            duration: 1.6,
-            ease: "power2.out",
-          })
           // Headline: jeder Buchstabe kommt aus seiner Maske nach oben
           .from(
             ".hero__headline .split-char",
@@ -82,18 +68,6 @@ export default function Hero() {
           },
         });
 
-        /* Leichter Parallax: der Hintergrund scrollt langsamer als der Text */
-        gsap.to(".hero__media", {
-          yPercent: 18,
-          ease: "none",
-          scrollTrigger: {
-            trigger: rootRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-
         /* Headline wandert beim Wegscrollen leicht nach oben und blendet ab */
         gsap.to(".hero__content", {
           yPercent: -12,
@@ -111,7 +85,7 @@ export default function Hero() {
       /* ---- Variante B: Bewegung reduziert ------------------------------ */
       mm.add(MEDIA.reduceMotion, () => {
         // Kein Scrub, kein Parallax — nur ein ruhiges Einblenden.
-        gsap.from(".hero__content, .hero__media", {
+        gsap.from(".hero__content", {
           autoAlpha: 0,
           duration: 0.4,
           ease: "none",
@@ -125,23 +99,6 @@ export default function Hero() {
 
   return (
     <section className="hero" id="hero" ref={rootRef}>
-      {/* ---- Hintergrund ---------------------------------------------------- */}
-      <div className="hero__media">
-        <video
-          className="hero__video"
-          src={asset(hero.backgroundVideo)}
-          poster={asset(hero.posterImage)}
-          autoPlay
-          muted
-          loop
-          playsInline
-          // Hero-Medien NICHT lazy laden — sie sind sofort sichtbar.
-          preload="auto"
-          aria-label={hero.posterAlt}
-        />
-        <div className="hero__scrim" aria-hidden="true" />
-      </div>
-
       {/* ---- Inhalt --------------------------------------------------------- */}
       <div className="hero__content">
         <p className="hero__tagline hero__info-item">{hero.tagline}</p>
