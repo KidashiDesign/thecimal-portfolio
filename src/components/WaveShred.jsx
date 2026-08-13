@@ -61,8 +61,6 @@ export default function WaveShred({ children, config }) {
 
     let targetWarp = 0; // 0 oder 1 — der binäre Auslöser
     let warpProgress = 0; // der weich nachgezogene Wert
-    let lastFrame = 0; // Zeitstempel des letzten Bildes
-    let lastScrollY = window.scrollY;
 
     let elements = [];
     let positions = [];
@@ -71,6 +69,7 @@ export default function WaveShred({ children, config }) {
     let enabled = false;
 
     let rafId = 0;
+    let stopTimer = 0;
 
     const shredAllowed = () =>
       !reduceQuery.matches && window.innerWidth >= cfg.minWidth;
@@ -160,13 +159,14 @@ export default function WaveShred({ children, config }) {
       if (!on) {
         targetWarp = 0;
         warpProgress = 0;
+        clearTimeout(stopTimer);
         displacement.setAttribute("scale", "0");
         resetElements();
       }
     }
 
     /* ---- Hintergrund ------------------------------------------------------ */
-    function drawBackground(delta) {
+    function drawBackground() {
       ctx.fillStyle = cfg.background;
       ctx.fillRect(0, 0, width, height);
 
@@ -183,9 +183,7 @@ export default function WaveShred({ children, config }) {
         ctx.stroke();
       }
 
-      // Auch die Wellen laufen über die Zeit, nicht pro Bild — sonst werden
-      // sie langsamer, sobald die Bildrate nachgibt.
-      time += 0.01 * (delta / 16.7);
+      time += 0.01;
     }
 
     /* ---- Elemente in die Bildmitte ziehen --------------------------------- */
@@ -194,9 +192,6 @@ export default function WaveShred({ children, config }) {
       const centerY = height / 2;
       const scrollY = window.scrollY;
       const scaleX = 1 + warpProgress * cfg.stretch;
-      /* Nicht ganz bis zur Mitte: Sonst deckt der Effekt die eigenen
-         Scroll-Animationen der Seite komplett zu (siehe maxCollapse). */
-      const travel = warpProgress * cfg.maxCollapse;
 
       // Jeder Rahmen wird pro Bild genau einmal gemessen, nicht pro Element.
       const frameRects = new Map();
@@ -225,44 +220,20 @@ export default function WaveShred({ children, config }) {
         const distanceY = centerY - screenY;
 
         elements[i].style.transform =
-          `translate(${(distanceX * travel).toFixed(2)}px, ` +
-          `${(distanceY * travel).toFixed(2)}px) ` +
+          `translate(${(distanceX * warpProgress).toFixed(2)}px, ` +
+          `${(distanceY * warpProgress).toFixed(2)}px) ` +
           `scaleX(${scaleX.toFixed(3)})`;
       }
     }
 
     /* ---- Bildschleife ----------------------------------------------------- */
-    function frame(now) {
-      /* Zeit seit dem letzten Bild. Für die Interpolation nach oben begrenzt,
-         damit ein einzelner Aussetzer (Tab im Hintergrund) nicht auf einen
-         Schlag durchspringt. Die Geschwindigkeit rechnet mit der ECHTEN
-         Zeit — sonst käme bei einem langen Bild ein zu hoher Wert heraus. */
-      const elapsed = now - lastFrame || 16.7;
-      const delta = Math.min(elapsed, 100);
-      lastFrame = now;
-
-      drawBackground(delta);
+    function frame() {
+      drawBackground();
 
       if (enabled) {
-        /* Auslöser: die tatsächliche Scroll-Geschwindigkeit. Kein Timer, kein
-           Scroll-Event — der weiche Auslauf von Lenis wird dadurch von selbst
-           schwächer, statt bis zum letzten Event auf voller Stärke zu bleiben.
-           Unterhalb von minSpeed ist ganz Schluss, sonst würde die Seite bei
-           minimalen Positionssprüngen leise flimmern. */
-        const scrolled = window.scrollY;
-        const speed = Math.abs(scrolled - lastScrollY) / elapsed;
-        lastScrollY = scrolled;
-
-        targetWarp =
-          speed < cfg.minSpeed
-            ? 0
-            : Math.min(1, (speed - cfg.minSpeed) / (cfg.fullSpeed - cfg.minSpeed));
-
-        /* Exponentielle Annäherung über die ZEIT, nicht pro Bild: Bei 60 fps
-           und bei 20 fps dauert Hin- und Rückweg gleich lang. */
-        const tau = targetWarp > warpProgress ? cfg.attack : cfg.release;
-        warpProgress += (targetWarp - warpProgress) * (1 - Math.exp(-delta / tau));
-        if (warpProgress < 0.002 && targetWarp === 0) warpProgress = 0;
+        // 0.9 = pro Bild 90 % der Reststrecke. Praktisch ein harter Schnitt.
+        warpProgress += (targetWarp - warpProgress) * cfg.snapSpeed;
+        if (warpProgress < 0.0015 && targetWarp === 0) warpProgress = 0;
 
         displacement.setAttribute(
           "scale",
@@ -287,6 +258,15 @@ export default function WaveShred({ children, config }) {
     }
 
     /* ---- Ereignisse ------------------------------------------------------- */
+    function onScroll() {
+      if (!enabled) return;
+      targetWarp = 1;
+      clearTimeout(stopTimer);
+      stopTimer = setTimeout(() => {
+        targetWarp = 0;
+      }, cfg.stopDelay);
+    }
+
     function onResize() {
       resizeCanvas();
       measured = false;
@@ -297,6 +277,7 @@ export default function WaveShred({ children, config }) {
     collectElements();
     setEnabled(shredAllowed());
 
+    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
     reduceQuery.addEventListener("change", onResize);
 
@@ -316,6 +297,8 @@ export default function WaveShred({ children, config }) {
 
     return () => {
       cancelAnimationFrame(rafId);
+      clearTimeout(stopTimer);
+      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
       reduceQuery.removeEventListener("change", onResize);
       observer.disconnect();

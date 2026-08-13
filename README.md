@@ -187,31 +187,12 @@ verschieben bzw. auskommentieren.
 
 ### Wave Shred — der Effekt über der ganzen Seite
 
-Beim Scrollen zerreißt ein SVG-Verzerrungsfilter den gesamten Inhalt, und alle
-markierten Blöcke ziehen Richtung Bildschirmmitte, während sie in die Breite
-gehen. Steht die Seite still, ist alles wieder an seinem Platz.
+Sobald gescrollt wird, zerreißt ein SVG-Verzerrungsfilter den gesamten Inhalt,
+und alle markierten Blöcke fahren in die exakte Bildschirmmitte, während sie
+in die Breite gezogen werden. Steht das Scrollen still, springt alles zurück.
 
-- **Stärke hängt am Tempo:** In Ruhe lesen und langsam scrollen zeigt kaum
-  Effekt, zügiges Scrollen die volle Stärke. Gesteuert über `minSpeed` (ab
-  wann überhaupt etwas passiert) und `fullSpeed` (ab wann volle Stärke) in
-  Pixeln pro Millisekunde.
-
-  Die Vorlage schaltet stattdessen bei jedem Scroll-Event hart auf 100 % und
-  nach 40 ms ohne Event wieder aus. Das passt hier nicht: Diese Seite scrollt
-  weich (Lenis) und gleitet nach dem Loslassen noch fast eine Sekunde aus —
-  an Events gekoppelt bliebe der Effekt die ganze Zeit auf voller Stärke
-  kleben. Am Tempo gekoppelt klingt er mit dem Ausgleiten ab.
-
-- **Zurückspringen:** `attack` und `release` sind Zeitkonstanten in
-  Millisekunden, nicht Schritte pro Bild wie in der Vorlage. Dadurch dauert es
-  immer gleich lang, auch wenn die Bildrate einbricht.
-
-- **Stärke:** `displacementScale`, `stretch` und `maxCollapse`. Alle drei sind
-  gegenüber der Vorlage (1500 / 10 / 1) deutlich zurückgenommen, sonst deckt
-  der Effekt die eigenen Scroll-Animationen der Seite komplett zu. Höher
-  drehen = näher an der Vorlage, aber die Seite verschwindet dahinter.
-
-- **Regler:** alle Werte in `src/lib/waveShred.js`.
+- **Regler:** alle Werte (Stärke, Streckung, Tempo, Wellenbild) in
+  `src/lib/waveShred.js`.
 - **Wer macht mit:** jedes Element mit dem Attribut `data-warp`. Zwei Regeln:
   nicht auf etwas setzen, das GSAP schon per `transform` bewegt (beide würden
   in dieselbe Eigenschaft schreiben), und nicht auf `position: fixed`-Elemente
