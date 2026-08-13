@@ -145,7 +145,7 @@ export default function Projects() {
         {/* ---- Bühne: Bild + Meta ------------------------------------------ */}
         <div className="projects__stage" id="project-panel" role="tabpanel"
              aria-labelledby={`project-tab-${active.id}`}>
-          <div className="projects__slides">
+          <div className="projects__slides" data-warp>
             {projects.items.map((item, index) => (
               <figure
                 className={`projects__slide ${index === activeIndex ? "is-active" : ""}`}
@@ -156,7 +156,7 @@ export default function Projects() {
             ))}
           </div>
 
-          <div className="projects__info">
+          <div className="projects__info" data-warp>
             {/* Leere Felder (z. B. unbekanntes Jahr) werden übersprungen,
                 statt eine Zeile ohne Wert zu rendern. */}
             <dl className="projects__meta">

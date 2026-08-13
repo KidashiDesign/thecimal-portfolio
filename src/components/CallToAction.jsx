@@ -78,7 +78,7 @@ export default function CallToAction() {
       <div className="cta__inner">
         <p className="eyebrow cta__eyebrow">{cta.eyebrow}</p>
 
-        <h2 className="cta__headline">
+        <h2 className="cta__headline" data-warp>
           <span className="cta__headline-line">
             <SplitChars text={cta.headlineTop} />
           </span>
@@ -87,7 +87,7 @@ export default function CallToAction() {
           </span>
         </h2>
 
-        <div className="cta__row">
+        <div className="cta__row" data-warp>
           <p className="cta__text">{cta.text}</p>
           <a className="button cta__button" href={cta.buttonHref}>
             {cta.buttonLabel}

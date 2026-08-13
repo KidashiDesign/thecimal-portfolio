@@ -151,6 +151,11 @@ export default function Milestones() {
   );
 
   return (
+    /* Hinweis: In dieser Sektion sitzt bewusst KEIN `data-warp`.
+       Sie wird beim Scrollen gepinnt — während des Pins stimmt der
+       Zusammenhang zwischen Dokumentposition und Bildschirmposition nicht
+       mehr, den WaveShred für seine Zielberechnung braucht. Die Elemente
+       würden auf die falsche Wellenlinie springen. */
     <section className="milestones" id="meilensteine" ref={rootRef}>
       <header className="milestones__head">
         <p className="eyebrow">{milestones.eyebrow}</p>

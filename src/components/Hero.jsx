@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------
    2. HERO
    --------------------------------------------------------------------------
-   - Hintergrund: die generative Wellen-Animation (App.jsx) scheint durch
+   - Hintergrund: die Wellen-Animation aus WaveShred (App.jsx) scheint durch
    - riesige zweizeilige Headline, die buchstabenweise von unten einfliegt
    - kleine Infoblöcke (Name, Rolle, Kontakt, Jahr) folgen zeitversetzt
    - Scroll-Indikator unten, der beim Scrollen ausfadet
@@ -103,7 +103,10 @@ export default function Hero() {
       <div className="hero__content">
         <p className="hero__tagline hero__info-item">{hero.tagline}</p>
 
-        <h1 className="hero__headline">
+        {/* data-warp: klappt beim Scrollen auf die Wellenlinie (WaveShred).
+            Sitzt auf der Überschrift, nicht auf `.hero__content` — den
+            bewegt GSAP bereits per Parallax. */}
+        <h1 className="hero__headline" data-warp>
           <span className="hero__headline-line">
             <SplitChars text={hero.headlineTop} />
           </span>
@@ -112,7 +115,7 @@ export default function Hero() {
           </span>
         </h1>
 
-        <div className="hero__info">
+        <div className="hero__info" data-warp>
           <div className="hero__info-item">
             <span className="hero__info-label">{hero.artistLabel}</span>
             <span className="hero__info-value">{hero.founderName}</span>

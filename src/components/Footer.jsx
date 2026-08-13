@@ -36,7 +36,7 @@ export default function Footer() {
 
   return (
     <footer className="footer" ref={rootRef}>
-      <div className="footer__inner">
+      <div className="footer__inner" data-warp>
         <div className="footer__brand">
           <img src={asset(footer.logo)} alt={footer.logoAlt} width="120" height="32" />
           <p className="footer__blurb">{footer.blurb}</p>

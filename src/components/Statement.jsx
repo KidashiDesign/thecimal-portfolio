@@ -78,7 +78,9 @@ export default function Statement() {
       <div className="statement__inner">
         <p className="eyebrow">{statement.eyebrow}</p>
 
-        <p className="statement__text">
+        {/* data-warp sitzt auf dem Absatz, das Aufhellen läuft auf den
+            Wörtern darin — zwei Ebenen, kein Streit um `transform`. */}
+        <p className="statement__text" data-warp>
           <SplitWords text={statement.text} />
         </p>
 

@@ -153,6 +153,7 @@ src/
 │   ├── Testimonials.jsx    8. Zitate mit Avatar-Stack
 │   ├── CallToAction.jsx    9. "Sag Hallo" + Bild-Grid
 │   ├── Footer.jsx         10. Footer
+│   ├── WaveShred.jsx       Wellen-Hintergrund + Scroll-Verzerrung
 │   ├── Odometer.jsx        Hilfsteil: rollende Ziffern
 │   └── Split.jsx           Hilfsteil: Text in Buchstaben/Wörter zerlegen
 │
@@ -163,6 +164,7 @@ src/
 └── lib/
     ├── gsap.js             GSAP-Grundeinstellungen
     ├── useSmoothScroll.js  Smooth Scrolling (Lenis)
+    ├── waveShred.js        Regler + Wellen-Formel für WaveShred
     └── motion.js           Erkennung von "Bewegung reduzieren"
 ```
 
@@ -182,6 +184,21 @@ verschieben bzw. auskommentieren.
 | Projekte     | Crossfade zwischen Bildern und Meta-Infos beim Tab-Wechsel                |
 | Marquee      | Endlos-Laufschrift, wird beim Drüberfahren langsamer                      |
 | CTA          | Bild-Grid erscheint gestaffelt, Hover zoomt leicht                        |
+
+### Wave Shred — der Effekt über der ganzen Seite
+
+Sobald gescrollt wird, zerreißt ein SVG-Verzerrungsfilter den Inhalt, die
+markierten Blöcke werden zur Bildmitte gezogen, flach gedrückt und legen sich
+auf die Wellenlinien im Hintergrund. Steht das Scrollen still, springt alles
+zurück.
+
+- **Regler:** alle Werte (Stärke, Tempo, Wellenbild) in `src/lib/waveShred.js`.
+- **Wer macht mit:** jedes Element mit dem Attribut `data-warp`. Zwei Regeln:
+  nicht auf etwas setzen, das GSAP schon per `transform` bewegt (beide würden
+  sich überschreiben), und nicht in einer fixierten oder gepinnten Sektion
+  (deshalb bleiben Navigation und Meilensteine außen vor).
+- **Grenzen:** Unter 768 px Breite und bei „Bewegung reduzieren“ läuft nur der
+  ruhige Wellen-Hintergrund. Nur Elemente in Bildschirmnähe machen mit.
 
 **Barrierefreiheit:** Ist im Betriebssystem „Bewegung reduzieren“ aktiviert,
 werden alle aufwendigen Effekte abgeschaltet — kein Fixieren, kein seitliches

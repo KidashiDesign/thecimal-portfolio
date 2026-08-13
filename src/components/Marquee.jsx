@@ -96,7 +96,8 @@ export default function Marquee() {
       onMouseLeave={speedUp}
       aria-label={marquee.words.join(", ")}
     >
-      <div className="marquee__inner">
+      {/* data-warp auf dem Rahmen — die Laufschrift darin bleibt GSAP. */}
+      <div className="marquee__inner" data-warp>
         <div className="marquee__row" aria-hidden="true">
           {row}
           {row}

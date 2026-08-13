@@ -103,7 +103,7 @@ export default function Testimonials() {
           </blockquote>
 
           {/* ---- Avatar-Stack --------------------------------------------- */}
-          <div className="testimonials__avatars">
+          <div className="testimonials__avatars" data-warp>
             {items.map((item, index) => (
               <button
                 key={item.name}
@@ -126,7 +126,7 @@ export default function Testimonials() {
             <span className="testimonials__role">{active.role}</span>
           </div>
 
-          <div className="testimonials__controls">
+          <div className="testimonials__controls" data-warp>
             <button
               type="button"
               className="testimonials__arrow"
