@@ -127,7 +127,9 @@ export default function MissionVision() {
       <div className="mission__inner">
         {/* ---- Textspalte -------------------------------------------------- */}
         <div className="mission__col">
-          <div className="mission__head">
+          {/* data-warp auf dem Kopf, nicht auf seinen Kindern — die bewegt
+              GSAP bereits beim Einblenden (`.mission__head > *`). */}
+          <div className="mission__head" data-warp>
             <p className="eyebrow">{missionVision.eyebrow}</p>
 
             {/* Tabs */}

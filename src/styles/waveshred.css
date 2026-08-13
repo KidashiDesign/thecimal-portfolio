@@ -22,33 +22,39 @@
   pointer-events: none;
 }
 
-/* Der Inhalt liegt über dem Canvas. Bewusst OHNE eigenen Filter und ohne
-   transform: Beides würde einen neuen Bezugsrahmen aufspannen und das
-   gepinnte Meilenstein-Panel aus seiner fixierten Position reißen. Der
-   Verzerrungsfilter hängt stattdessen an den einzelnen Elementen. */
+/* Der Inhalt liegt darüber. */
 .wave-shred__warp {
   position: relative;
   z-index: 1;
 }
 
-/* Elemente mit `data-warp` klappen zur Mitte. `transform-origin: center`
-   ist Pflicht, sonst kippen sie um die Ecke statt um ihren Schwerpunkt. */
-[data-warp] {
-  transform-origin: center center;
+/* Der Verzerrungsfilter liegt über dem GESAMTEN Inhalt — nur so zerreißt
+   die Seite als Ganzes. Die Klasse setzt das JavaScript; auf schmalen
+   Bildschirmen und bei "Bewegung reduzieren" bleibt sie weg. */
+.wave-shred__warp.is-warping {
+  filter: url(#wave-shred-warp);
+  will-change: filter;
+  transform: translateZ(0);
 }
 
-/* will-change nur während der Bewegung — sonst belegt jede Sektion dauerhaft
-   eine eigene GPU-Ebene. */
-.wave-shred__warp.is-shredding [data-warp] {
-  will-change: transform, opacity, filter;
+/* Elemente mit `data-warp` fahren in die Bildmitte. `transform-origin:
+   center` ist Pflicht, sonst kippen sie um die Ecke statt um ihre Mitte.
+   Anders als in der Vorlage setzen wir hier KEIN `display: inline-block` —
+   die Sektionen dieser Seite sind Grid- und Flex-Layouts, das würde sie
+   auseinanderreißen. Für die Transformation ist es nicht nötig. */
+.is-warping [data-warp] {
+  transform-origin: center center;
+  will-change: transform;
 }
 
 /* Bewegung reduzieren: keine Verzerrung, kein Einklappen. Der ruhige
    Wellen-Hintergrund bleibt — er ist Teil des Seiten-Looks. */
 @media (prefers-reduced-motion: reduce) {
+  .wave-shred__warp {
+    filter: none !important;
+  }
+
   [data-warp] {
     transform: none !important;
-    filter: none !important;
-    opacity: 1 !important;
   }
 }

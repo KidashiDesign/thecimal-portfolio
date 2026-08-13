@@ -100,8 +100,13 @@ export default function Hero() {
   return (
     <section className="hero" id="hero" ref={rootRef}>
       {/* ---- Inhalt --------------------------------------------------------- */}
-      <div className="hero__content">
-        <p className="hero__tagline hero__info-item">{hero.tagline}</p>
+      {/* data-warp-frame: Dieser Block wird beim Scrollen per Parallax
+          verschoben. Die Elemente darin messen relativ zu ihm, sonst zielen
+          sie um den Parallax-Versatz daneben. */}
+      <div className="hero__content" data-warp-frame>
+        <p className="hero__tagline hero__info-item" data-warp>
+          {hero.tagline}
+        </p>
 
         {/* data-warp: klappt beim Scrollen auf die Wellenlinie (WaveShred).
             Sitzt auf der Überschrift, nicht auf `.hero__content` — den

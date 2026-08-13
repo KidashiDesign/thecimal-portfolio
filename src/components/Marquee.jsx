@@ -89,15 +89,19 @@ export default function Marquee() {
   );
 
   return (
+    /* data-warp sitzt hier auf der Sektion selbst: Die beiden inneren Ebenen
+       bewegt GSAP bereits (`.marquee__inner` per Scroll, `.marquee__row` als
+       Dauerschleife) — ein transform von außen würde sich mit beiden
+       überschreiben. */
     <section
       className="marquee"
+      data-warp
       ref={rootRef}
       onMouseEnter={slowDown}
       onMouseLeave={speedUp}
       aria-label={marquee.words.join(", ")}
     >
-      {/* data-warp auf dem Rahmen — die Laufschrift darin bleibt GSAP. */}
-      <div className="marquee__inner" data-warp>
+      <div className="marquee__inner">
         <div className="marquee__row" aria-hidden="true">
           {row}
           {row}

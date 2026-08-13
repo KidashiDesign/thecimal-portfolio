@@ -151,22 +151,29 @@ export default function Milestones() {
   );
 
   return (
-    /* Hinweis: In dieser Sektion sitzt bewusst KEIN `data-warp`.
-       Sie wird beim Scrollen gepinnt — während des Pins stimmt der
-       Zusammenhang zwischen Dokumentposition und Bildschirmposition nicht
-       mehr, den WaveShred für seine Zielberechnung braucht. Die Elemente
-       würden auf die falsche Wellenlinie springen. */
-    <section className="milestones" id="meilensteine" ref={rootRef}>
-      <header className="milestones__head">
+    /* data-warp-frame: Diese Sektion wird gepinnt und ihr Track seitlich
+       verschoben. WaveShred darf die Positionen darin deshalb nicht aus dem
+       Dokument ableiten, sondern misst sie relativ zu dieser Sektion. */
+    <section
+      className="milestones"
+      id="meilensteine"
+      data-warp-frame
+      ref={rootRef}
+    >
+      <header className="milestones__head" data-warp>
         <p className="eyebrow">{milestones.eyebrow}</p>
         <h2 className="headline milestones__headline">{milestones.headline}</h2>
       </header>
 
       <div className="milestones__viewport" ref={viewportRef}>
-        <div className="milestones__track" ref={trackRef}>
+        {/* Zweiter Bezugsrahmen: Der Track wandert beim Pinnen zusätzlich
+            seitlich. Die Panels darin messen deshalb relativ zu IHM. */}
+        <div className="milestones__track" data-warp-frame ref={trackRef}>
           {milestones.panels.map((panel, index) => (
             <article className="milestone" key={panel.year + panel.label}>
-              <div className="milestone__body">
+              {/* data-warp auf dem Textblock: Die Kinder mit
+                  `.milestone__reveal` blendet GSAP beim Durchlaufen ein. */}
+              <div className="milestone__body" data-warp>
                 <span className="milestone__index milestone__reveal">
                   {String(index + 1).padStart(2, "0")} / {String(milestones.panels.length).padStart(2, "0")}
                 </span>

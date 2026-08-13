@@ -187,18 +187,27 @@ verschieben bzw. auskommentieren.
 
 ### Wave Shred — der Effekt über der ganzen Seite
 
-Sobald gescrollt wird, zerreißt ein SVG-Verzerrungsfilter den Inhalt, die
-markierten Blöcke werden zur Bildmitte gezogen, flach gedrückt und legen sich
-auf die Wellenlinien im Hintergrund. Steht das Scrollen still, springt alles
-zurück.
+Sobald gescrollt wird, zerreißt ein SVG-Verzerrungsfilter den gesamten Inhalt,
+und alle markierten Blöcke fahren in die exakte Bildschirmmitte, während sie
+in die Breite gezogen werden. Steht das Scrollen still, springt alles zurück.
 
-- **Regler:** alle Werte (Stärke, Tempo, Wellenbild) in `src/lib/waveShred.js`.
+- **Regler:** alle Werte (Stärke, Streckung, Tempo, Wellenbild) in
+  `src/lib/waveShred.js`.
 - **Wer macht mit:** jedes Element mit dem Attribut `data-warp`. Zwei Regeln:
   nicht auf etwas setzen, das GSAP schon per `transform` bewegt (beide würden
-  sich überschreiben), und nicht in einer fixierten oder gepinnten Sektion
-  (deshalb bleiben Navigation und Meilensteine außen vor).
+  in dieselbe Eigenschaft schreiben), und nicht auf `position: fixed`-Elemente
+  (deshalb liegt die Navigation außerhalb).
+- **`data-warp-frame`:** markiert Container, die GSAP selbst verschiebt
+  (Hero-Parallax, gepinnte Meilensteine samt Track). Elemente darin messen
+  ihre Position relativ zu diesem Rahmen statt zum Dokument — sonst zielen
+  sie am Bildschirmmittelpunkt vorbei.
 - **Grenzen:** Unter 768 px Breite und bei „Bewegung reduzieren“ läuft nur der
-  ruhige Wellen-Hintergrund. Nur Elemente in Bildschirmnähe machen mit.
+  ruhige Wellen-Hintergrund.
+- **Leistung:** Der Filter liegt über der ganzen Seite — so steht es in der
+  Vorlage, und nur so zerreißt die Seite als Ganzes statt jedes Element für
+  sich. Das ist der teuerste Teil des Effekts. Wird es auf schwächeren Geräten
+  zäh, sind die wirksamsten Stellschrauben: weniger `data-warp`-Elemente,
+  kleinerer `displacementScale`, kleinerer `stretch`.
 
 **Barrierefreiheit:** Ist im Betriebssystem „Bewegung reduzieren“ aktiviert,
 werden alle aufwendigen Effekte abgeschaltet — kein Fixieren, kein seitliches

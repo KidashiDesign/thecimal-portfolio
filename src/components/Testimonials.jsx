@@ -95,11 +95,13 @@ export default function Testimonials() {
         <div className="testimonials__body">
           {/* ---- Zitat ---------------------------------------------------- */}
           <blockquote className="testimonials__quote">
-            <span className="testimonials__mark" aria-hidden="true">
+            <span className="testimonials__mark" aria-hidden="true" data-warp>
               &ldquo;
             </span>
             {/* aria-live: Screenreader bekommen den Wechsel mit */}
-            <p aria-live="polite">{active.quote}</p>
+            <p aria-live="polite" data-warp>
+              {active.quote}
+            </p>
           </blockquote>
 
           {/* ---- Avatar-Stack --------------------------------------------- */}

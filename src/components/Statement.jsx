@@ -76,7 +76,9 @@ export default function Statement() {
   return (
     <section className="section statement" id="statement" ref={rootRef}>
       <div className="statement__inner">
-        <p className="eyebrow">{statement.eyebrow}</p>
+        <p className="eyebrow" data-warp>
+          {statement.eyebrow}
+        </p>
 
         {/* data-warp sitzt auf dem Absatz, das Aufhellen läuft auf den
             Wörtern darin — zwei Ebenen, kein Streit um `transform`. */}
