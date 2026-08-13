@@ -1,0 +1,54 @@
+/* ==========================================================================
+   WAVE SHRED — Hintergrund-Canvas & Verzerrungs-Wrapper
+   ==========================================================================
+   Gehört zu src/components/WaveShred.jsx. Die eigentliche Bewegung entsteht
+   im JavaScript; hier steht nur, wo die Ebenen liegen.
+   ========================================================================== */
+
+/* Der SVG-Filter selbst wird nie gezeigt — er ist reine Definition. */
+.wave-shred__defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* Wellenlinien: liegen fixiert ganz hinten, fangen keine Klicks ab. */
+.wave-shred__canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  pointer-events: none;
+}
+
+/* Der Inhalt liegt über dem Canvas. Bewusst OHNE eigenen Filter und ohne
+   transform: Beides würde einen neuen Bezugsrahmen aufspannen und das
+   gepinnte Meilenstein-Panel aus seiner fixierten Position reißen. Der
+   Verzerrungsfilter hängt stattdessen an den einzelnen Elementen. */
+.wave-shred__warp {
+  position: relative;
+  z-index: 1;
+}
+
+/* Elemente mit `data-warp` klappen zur Mitte. `transform-origin: center`
+   ist Pflicht, sonst kippen sie um die Ecke statt um ihren Schwerpunkt. */
+[data-warp] {
+  transform-origin: center center;
+}
+
+/* will-change nur während der Bewegung — sonst belegt jede Sektion dauerhaft
+   eine eigene GPU-Ebene. */
+.wave-shred__warp.is-shredding [data-warp] {
+  will-change: transform, opacity, filter;
+}
+
+/* Bewegung reduzieren: keine Verzerrung, kein Einklappen. Der ruhige
+   Wellen-Hintergrund bleibt — er ist Teil des Seiten-Looks. */
+@media (prefers-reduced-motion: reduce) {
+  [data-warp] {
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+}

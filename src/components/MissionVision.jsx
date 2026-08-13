@@ -150,7 +150,7 @@ export default function MissionVision() {
           </div>
 
           {/* Panels — liegen übereinander und werden übergeblendet */}
-          <div className="mission__panels">
+          <div className="mission__panels" data-warp>
             {missionVision.tabs.map((tab, index) => (
               <div
                 key={tab.id}
@@ -180,7 +180,7 @@ export default function MissionVision() {
         </div>
 
         {/* ---- Bild-Cluster ------------------------------------------------ */}
-        <div className="mission__cluster">
+        <div className="mission__cluster" data-warp>
           {missionImages.map((image, index) => (
             <figure className={`mission__figure mission__figure--${index + 1}`} key={image.src}>
               <img

@@ -10,7 +10,7 @@
    -------------------------------------------------------------------------- */
 
 import { useEffect } from "react";
-import GenerativeBackground from "./components/GenerativeBackground";
+import WaveShred from "./components/WaveShred";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
 import Statement from "./components/Statement";
@@ -40,21 +40,28 @@ export default function App() {
 
   return (
     <>
-      <GenerativeBackground />
+      {/* Die Navigation liegt bewusst AUSSERHALB von <WaveShred>: Sie ist
+          `position: fixed`, und der Verzerrungsfilter würde sie aus ihrem
+          Bezugsrahmen reißen — sie würde mitscrollen statt oben zu kleben.
+          So bleibt sie außerdem jederzeit lesbar und bedienbar. */}
       <Nav />
 
-      <main>
-        <Hero />
-        <Statement />
-        <MissionVision />
-        <Milestones />
-        <Projects />
-        <Marquee />
-        <Testimonials />
-        <CallToAction />
-      </main>
+      {/* WaveShred bringt den Wellen-Hintergrund mit und schreddert beim
+          Scrollen alles, was hier drin mit `data-warp` markiert ist. */}
+      <WaveShred>
+        <main>
+          <Hero />
+          <Statement />
+          <MissionVision />
+          <Milestones />
+          <Projects />
+          <Marquee />
+          <Testimonials />
+          <CallToAction />
+        </main>
 
-      <Footer />
+        <Footer />
+      </WaveShred>
     </>
   );
 }
