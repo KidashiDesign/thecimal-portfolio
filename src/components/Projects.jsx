@@ -116,7 +116,7 @@ export default function Projects() {
   return (
     <section className="section projects" id="projekte" ref={rootRef}>
       <div className="projects__inner">
-        <div className="projects__head">
+        <div className="projects__head" data-warp>
           <p className="eyebrow">{projects.eyebrow}</p>
           <h2 className="headline">{projects.headline}</h2>
         </div>
@@ -186,7 +186,7 @@ export default function Projects() {
         </div>
 
         {/* ---- Thumbnail-Strip --------------------------------------------- */}
-        <div className="projects__strip">
+        <div className="projects__strip" data-warp>
           {projects.items.map((item, index) => (
             <button
               key={item.id}

@@ -20,6 +20,13 @@ gsap.defaults({
   duration: 1,
 });
 
+/* Pinning per transform statt per `position: fixed`.
+   WaveShred legt einen CSS-Filter über den gesamten Seiteninhalt. Ein Filter
+   erzeugt einen neuen Bezugsrahmen — `position: fixed` bezieht sich darin
+   nicht mehr auf das Fenster, die gepinnte Meilenstein-Sektion würde also
+   wegrutschen. Mit "transform" pinnt ScrollTrigger unabhängig davon. */
+ScrollTrigger.defaults({ pinType: "transform" });
+
 /* Media-Query-Bausteine für gsap.matchMedia().
    Damit schalten wir Pinning & Co. auf Mobile ab und respektieren
    die System-Einstellung "Bewegung reduzieren". */

@@ -72,8 +72,8 @@ export default function Footer() {
       </div>
 
       <div className="footer__bottom">
-        <p>{footer.copyright}</p>
-        <ul className="footer__legal">
+        <p data-warp>{footer.copyright}</p>
+        <ul className="footer__legal" data-warp>
           {footer.legalLinks.map((link) => (
             <li key={link.label}>
               <a href={link.href}>{link.label}</a>
