@@ -22,6 +22,16 @@
   pointer-events: none;
 }
 
+/* Laufende, ruhige Hintergrundwellen. Sie liegen hinter dem Inhalt und
+   bleiben damit sichtbar, auch wenn der Scroll-Shred oben daraufliegt. */
+.idle-wave__canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  pointer-events: none;
+}
+
 /* Der Inhalt liegt darüber. */
 .wave-shred__warp {
   position: relative;

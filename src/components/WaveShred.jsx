@@ -1,34 +1,4 @@
-/* --------------------------------------------------------------------------
-   WAVE SHRED — "Center Collapse & Wave Shred"
-   --------------------------------------------------------------------------
-   Umsetzung der Vorlage (index.html) für diese Seite. Drei Teile:
-
-   1. CANVAS   — die animierten Wellenlinien hinter der Seite.
-   2. FILTER   — ein SVG-Verzerrungsfilter, der ÜBER DEM GESAMTEN Inhalt
-                 liegt und beim Scrollen aufdreht ("Shred").
-   3. COLLAPSE — alle mit `data-warp` markierten Elemente fahren in die
-                 exakte Bildschirmmitte und werden dabei breitgezogen.
-
-   Ausgelöst wird binär: erstes Scroll-Event = 100 %, 40 ms ohne Scroll-Event
-   = wieder 0. Dazwischen legt der Wert pro Bild 90 % der Reststrecke zurück.
-
-   WICHTIG — der Filter gehört auf den WRAPPER, nicht auf die Elemente.
-   Auf den einzelnen Elementen wirkt er vor deren `scaleX(11)` und wird
-   dadurch mitgestreckt: Die Verzerrung fransst dann seitlich aus, statt die
-   Seite als Ganzes zu zerreißen. Genau so steht es auch in der Vorlage.
-
-   WICHTIG — was NICHT `data-warp` bekommen darf:
-   - Elemente, die GSAP per transform bewegt (Reveals, Parallax, Marquee).
-     Beide schreiben in dieselbe style-Eigenschaft und überschreiben sich
-     gegenseitig. `data-warp` sitzt deshalb immer auf einem Element daneben
-     oder darüber — die Liste der GSAP-Ziele steht in den Sektionen selbst.
-   - `position: fixed`-Elemente. Der Filter spannt einen neuen Bezugsrahmen
-     auf, fixierte Kinder würden mitscrollen. Die Navigation liegt deshalb
-     außerhalb; gepinnte Sektionen laufen über `pinType: "transform"`
-     (siehe src/lib/gsap.js).
-   -------------------------------------------------------------------------- */
-
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { WAVE_SHRED, waveY, hexToRgba } from "../lib/waveShred";
 import "../styles/waveshred.css";
 
@@ -40,9 +10,83 @@ export default function WaveShred({ children, config }) {
   const turbulenceRef = useRef(null);
   const displacementRef = useRef(null);
 
-  // Ref, damit geänderte Werte den Effekt nicht neu starten.
   const configRef = useRef(config);
   configRef.current = config;
+
+  /* ---- Audio State & Synth Refs ---- */
+  const [soundActive, setSoundActive] = useState(false);
+  const audioRef = useRef(null);
+
+  const handleEnableSound = () => {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AudioContext();
+
+    // Master Output
+    const masterGain = ctx.createGain();
+    masterGain.gain.value = 0;
+
+    // EXTREME DISTORTION (WaveShaper)
+    function makeDistortionCurve(amount) {
+      const k = typeof amount === 'number' ? amount : 50;
+      const n_samples = 44100;
+      const curve = new Float32Array(n_samples);
+      const deg = Math.PI / 180;
+      for (let i = 0; i < n_samples; ++i) {
+        const x = (i * 2) / n_samples - 1;
+        curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.abs(x));
+      }
+      return curve;
+    }
+
+    const distortion = ctx.createWaveShaper();
+    distortion.curve = makeDistortionCurve(800); // 800 = completely crushed/clipped
+    distortion.oversample = '4x';
+
+    // Master chain: Distortion -> Gain -> Destination
+    distortion.connect(masterGain);
+    masterGain.connect(ctx.destination);
+
+    // 1. Digital White Noise Generator
+    const bufferSize = ctx.sampleRate * 2;
+    const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = Math.random() * 2 - 1; // Pure random static
+    }
+    
+    const noiseSrc = ctx.createBufferSource();
+    noiseSrc.buffer = noiseBuffer;
+    noiseSrc.loop = true;
+    
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.value = 0.5;
+    
+    const noiseFilter = ctx.createBiquadFilter();
+    noiseFilter.type = "bandpass";
+    noiseFilter.Q.value = 2; // Medium width for harsh static bursts
+    
+    noiseSrc.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(distortion);
+    noiseSrc.start();
+
+    // 2. Glitch Oscillator (Square wave for digital errors/beeps)
+    const glitchOsc = ctx.createOscillator();
+    glitchOsc.type = "square";
+    
+    const glitchGain = ctx.createGain();
+    glitchGain.gain.value = 0; // Starts silent, spiked during glitches
+    
+    glitchOsc.connect(glitchGain);
+    glitchGain.connect(distortion);
+    glitchOsc.start();
+
+    audioRef.current = { 
+      ctx, masterGain, noiseGain, noiseFilter, glitchOsc, glitchGain 
+    };
+    setSoundActive(true);
+    ctx.resume();
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -54,297 +98,286 @@ export default function WaveShred({ children, config }) {
     const cfg = { ...WAVE_SHRED, ...(configRef.current || {}) };
     const reduceQuery = window.matchMedia(REDUCE_MOTION);
 
-    /* ---- Zustand --------------------------------------------------------- */
+    /* ---- State variables ---- */
     let width = 0;
     let height = 0;
     let time = 0;
-
-    let targetWarp = 0; // 0 oder 1 — der binäre Auslöser
-    let warpProgress = 0; // der weich nachgezogene Wert
-
-    let elements = [];
-    let positions = [];
-    let frames = []; // Bezugsrahmen je Element (meist null) — siehe measure()
-    let measured = false;
-    let enabled = false;
-
+    let warpProgress = 0;
+    let mergeProgress = 0;
+    let targetWarp = 0;
+    let energy = 0;
+    
+    let els = [];
+    let bounds = [];
+    
     let rafId = 0;
-    let stopTimer = 0;
+    let lastScrollY = 0;
+    let scroller = window;
+    let enabled = false;
 
     const shredAllowed = () =>
       !reduceQuery.matches && window.innerWidth >= cfg.minWidth;
 
-    /* ---- Canvas auf Gerätepixel bringen ---------------------------------- */
-    function resizeCanvas() {
+    function findScroller() {
+      let n = warp && warp.parentElement;
+      while (n && n !== document.body) {
+        const s = getComputedStyle(n);
+        if (/(auto|scroll|overlay)/.test(s.overflowY) && n.scrollHeight > n.clientHeight + 1) return n;
+        n = n.parentElement;
+      }
+      const b = document.body, d = document.documentElement;
+      if (b && b.scrollHeight > b.clientHeight + 1 && /(auto|scroll|overlay)/.test(getComputedStyle(b).overflowY)) return b;
+      return d.scrollHeight > d.clientHeight + 1 ? d : window;
+    }
+
+    function scrollTop() {
+      if (!scroller || scroller === window) return window.scrollY || document.documentElement.scrollTop || 0;
+      return scroller.scrollTop;
+    }
+
+    function sizeCanvas() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       width = window.innerWidth;
       height = window.innerHeight;
-      canvas.width = Math.round(width * dpr);
-      canvas.height = Math.round(height * dpr);
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
-    /* ---- Zielelemente einsammeln -----------------------------------------
-       Verschachtelte Treffer fliegen raus: Läge `data-warp` auf Eltern UND
-       Kind, würden sich die Transformationen multiplizieren. */
-    function collectElements() {
-      const all = Array.from(warp.querySelectorAll("[data-warp]"));
-      elements = all.filter(
-        (el) => !all.some((other) => other !== el && other.contains(el))
-      );
-      frames = elements.map((el) => el.closest("[data-warp-frame]"));
-      measured = false;
+    function cacheBounds() {
+      els = Array.from(warp.querySelectorAll("[data-warp]"));
+      const prev = els.map((el) => el.style.transform);
+      els.forEach((el) => { el.style.transform = "none"; });
+      bounds = els.map((el) => {
+        const r = el.getBoundingClientRect();
+        return { x: r.left + r.width / 2, y: r.top + scrollTop() + r.height / 2, w: r.width, h: r.height };
+      });
+      els.forEach((el, i) => { el.style.transform = prev[i] || ""; });
     }
 
-    /* ---- Ausgangsposition messen -----------------------------------------
-       Wie in der Vorlage wird EINMAL gemessen und danach pro Bild nur noch
-       gerechnet. Pro Bild neu zu messen wäre das Naheliegende, kostet aber
-       für jedes Element ein erzwungenes Neu-Layout — bei gesetztem Filter
-       bricht die Bildrate dadurch ein.
-
-       Zwei Bezugssysteme:
-       - Normalfall (frame === null): Position im Dokument. Auf dem Bildschirm
-         ist das schlicht `y - scrollY` — genau wie in der Vorlage.
-       - Innerhalb eines `data-warp-frame`: Dort verschiebt GSAP den Rahmen
-         selbst (Hero-Parallax, Pinning und seitlicher Lauf der Meilensteine),
-         "Dokumentposition minus Scrollstand" stimmt dann nicht mehr. Diese
-         Elemente merken sich den Abstand zu ihrem Rahmen; pro Bild wird nur
-         DESSEN Position abgefragt — drei Messungen statt einer pro Element. */
-    function measure() {
-      const previous = elements.map((el) => el.style.transform);
-      elements.forEach((el) => {
-        el.style.transform = "none";
-      });
-
-      const scrollY = window.scrollY;
-      const frameRects = new Map();
-
-      positions = elements.map((el, index) => {
-        const rect = el.getBoundingClientRect();
-        const x = rect.left + rect.width / 2;
-        const y = rect.top + rect.height / 2;
-        const frame = frames[index];
-
-        if (!frame) return { x, y: y + scrollY };
-
-        if (!frameRects.has(frame)) {
-          frameRects.set(frame, frame.getBoundingClientRect());
-        }
-        const frameRect = frameRects.get(frame);
-        return { x: x - frameRect.left, y: y - frameRect.top };
-      });
-
-      elements.forEach((el, index) => {
-        el.style.transform = previous[index] || "";
-      });
-      measured = true;
-    }
-
-    function resetElements() {
-      elements.forEach((el) => {
-        if (el.style.transform) el.style.transform = "";
-      });
-    }
-
-    /* Filter und will-change hängen dauerhaft am Wrapper, solange der Effekt
-       aktiv ist — genau wie in der Vorlage. Würden wir sie beim Stillstand
-       abhängen, änderte sich jedes Mal die Textglättung und die Schrift
-       würde sichtbar "umspringen". */
     function setEnabled(on) {
       if (on === enabled) return;
       enabled = on;
-      warp.classList.toggle("is-warping", on);
       if (!on) {
         targetWarp = 0;
         warpProgress = 0;
-        clearTimeout(stopTimer);
+        mergeProgress = 0;
         displacement.setAttribute("scale", "0");
-        resetElements();
+        if (warpRef.current) warpRef.current.style.transform = "translateZ(0)";
+        els.forEach((el) => {
+            if (el.style.transform) { el.style.transform = ""; el.style.opacity = ""; el.style.filter = ""; }
+        });
       }
     }
 
-    /* ---- Hintergrund ------------------------------------------------------ */
     function drawBackground() {
       ctx.fillStyle = cfg.background;
       ctx.fillRect(0, 0, width, height);
+      const e = energy;
+      const amp = 1 + e * 0.55;
 
-      ctx.strokeStyle = hexToRgba(cfg.color, cfg.opacity);
-      ctx.lineWidth = 1;
-
-      for (let line = 0; line < cfg.lines; line++) {
+      for (let j = 0; j < cfg.lines; j++) {
+        const hot = e * cfg.waveFlare * (0.35 + 0.65 * Math.abs(Math.sin(j * 1.7 + time * 3)));
+        ctx.strokeStyle = hexToRgba(cfg.color, Math.min(1, cfg.waveOpacity + hot));
+        ctx.lineWidth = cfg.waveThickness * (1 + hot * 1.2);
+        
         ctx.beginPath();
-        for (let x = 0; x < width; x += 10) {
-          const y = waveY(x, line, height, time);
-          if (x === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
+        for (let x = 0; x <= width; x += 6) {
+          const jitter = e * e * Math.sin(x * 0.35 + time * 40 + j * 9) * 40 * cfg.waveJitter;
+          const y = waveY(x, j, amp, time, height, cfg) + jitter;
+          if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
         }
         ctx.stroke();
       }
-
-      time += 0.01;
+      time += 0.01 + e * 0.05;
     }
 
-    /* ---- Elemente in die Bildmitte ziehen --------------------------------- */
-    function moveElements() {
-      const centerX = width / 2;
-      const centerY = height / 2;
-      const scrollY = window.scrollY;
-      const scaleX = 1 + warpProgress * cfg.stretch;
-
-      // Jeder Rahmen wird pro Bild genau einmal gemessen, nicht pro Element.
-      const frameRects = new Map();
-      for (let i = 0; i < frames.length; i++) {
-        const frame = frames[i];
-        if (frame && !frameRects.has(frame)) {
-          frameRects.set(frame, frame.getBoundingClientRect());
-        }
-      }
-
-      for (let i = 0; i < elements.length; i++) {
-        const frame = frames[i];
-        let screenX;
-        let screenY;
-
-        if (frame) {
-          const frameRect = frameRects.get(frame);
-          screenX = frameRect.left + positions[i].x;
-          screenY = frameRect.top + positions[i].y;
-        } else {
-          screenX = positions[i].x;
-          screenY = positions[i].y - scrollY;
-        }
-
-        const distanceX = centerX - screenX;
-        const distanceY = centerY - screenY;
-
-        elements[i].style.transform =
-          `translate(${(distanceX * warpProgress).toFixed(2)}px, ` +
-          `${(distanceY * warpProgress).toFixed(2)}px) ` +
-          `scaleX(${scaleX.toFixed(3)})`;
-      }
-    }
-
-    /* ---- Bildschleife ----------------------------------------------------- */
-    function frame() {
+    /* ---- Main Loop ---- */
+    function loop() {
       drawBackground();
 
       if (enabled) {
-        // 0.9 = pro Bild 90 % der Reststrecke. Praktisch ein harter Schnitt.
+        const currentScrollY = scrollTop();
+        const scrollDelta = Math.abs(currentScrollY - lastScrollY);
+        lastScrollY = currentScrollY;
+
+        targetWarp = scrollDelta > 2 ? 1 : 0;
+
         warpProgress += (targetWarp - warpProgress) * cfg.snapSpeed;
-        if (warpProgress < 0.0015 && targetWarp === 0) warpProgress = 0;
+        mergeProgress += (warpProgress - mergeProgress) * cfg.mergeSpeed;
+        
+        if (warpProgress < 0.0015 && targetWarp === 0) {
+            warpProgress = 0;
+            mergeProgress *= 0.5; 
+        }
+        if (mergeProgress < 0.0015) mergeProgress = 0;
+        
+        energy = Math.max(warpProgress, mergeProgress);
+        const p = warpProgress;
+        const m = mergeProgress;
 
-        displacement.setAttribute(
-          "scale",
-          (warpProgress * cfg.displacementScale).toFixed(2)
-        );
-        turbulence.setAttribute(
-          "baseFrequency",
-          `0.001 ${(0.1 + warpProgress * 0.1).toFixed(4)}`
-        );
+        // ---- NEW: IDLE GLITCH & NOISE LOGIC ----
+        let idleScale = 0;
+        let idleX = 0;
+        let idleY = 0;
+        
+        if (p < 0.05) {
+          idleScale = Math.random() * 1.5; // Constant minimal noise
+          
+          if (Math.random() > 0.98) { // Occasional random glitch/shake
+            idleScale = Math.random() * 10;
+            idleX = (Math.random() - 0.5) * 6;
+            idleY = (Math.random() - 0.5) * 6;
+          }
+        }
 
-        if (warpProgress === 0) {
-          resetElements();
-          // Nur im Ruhezustand nachmessen — dann steht kein transform im Weg.
-          if (!measured) measure();
-        } else {
-          if (!measured) measure();
-          moveElements();
+        // ---- UPDATE GLITCH AUDIO ----
+        if (audioRef.current) {
+          const { ctx, masterGain, noiseGain, noiseFilter, glitchOsc, glitchGain } = audioRef.current;
+          
+          if (targetWarp === 1) {
+            // Master volume is high and active
+            masterGain.gain.setTargetAtTime(0.3, ctx.currentTime, 0.02);
+
+            // 1. STUTTER EFFECT: 30% chance to rapidly cut the noise in and out (gating)
+            if (Math.random() > 0.7) {
+              noiseGain.gain.setValueAtTime(0, ctx.currentTime);
+            } else {
+              noiseGain.gain.setValueAtTime(1, ctx.currentTime);
+            }
+
+            // 2. SWEEPING NOISE: Move the noise bandpass filter violently
+            if (Math.random() > 0.4) {
+              noiseFilter.frequency.setValueAtTime(Math.random() * 8000 + 100, ctx.currentTime);
+            }
+
+            // 3. DIGITAL SCREAM: The square wave jumping to extreme, harsh frequencies
+            if (Math.random() > 0.8) {
+              // High piercing pitch
+              glitchOsc.frequency.setValueAtTime(Math.random() * 5000 + 500, ctx.currentTime);
+              glitchGain.gain.setValueAtTime(0.4, ctx.currentTime);
+            } else {
+              // Mute the square wave most of the time to make it sporadic
+              glitchGain.gain.setValueAtTime(0, ctx.currentTime);
+            }
+          } else {
+            // INSTANTLY KILL AUDIO when scroll stops
+            masterGain.gain.setTargetAtTime(0, ctx.currentTime, 0.05);
+            glitchGain.gain.setTargetAtTime(0, ctx.currentTime, 0.01);
+          }
+        }
+
+        displacement.setAttribute("scale", String(p * cfg.displacementScale + idleScale));
+        turbulence.setAttribute("baseFrequency", `0.001 ${(0.1 + p * 0.1).toFixed(4)}`);
+        
+        if (warpRef.current) {
+          warpRef.current.style.transform = `translate3d(${idleX.toFixed(2)}px, ${idleY.toFixed(2)}px, 0)`;
+        }
+
+        const cx = width / 2;
+
+        for (let i = 0; i < els.length; i++) {
+          const el = els[i];
+          const b = bounds[i];
+          if (!b) continue;
+          
+          if (p === 0 && m === 0) {
+            if (el.style.transform) { el.style.transform = ""; el.style.opacity = ""; el.style.filter = ""; }
+            continue;
+          }
+          
+          const sx = b.x;
+          const sy = b.y - currentScrollY;
+          const pullX = (cx - sx) * 0.65;
+          const destX = sx + pullX * m;
+          const line = (i * 5) % cfg.lines;
+          const amp = 1 + energy * 0.55;
+          
+          const wy = cfg.snapToWave ? waveY(destX, line, amp, time, height, cfg) : height / 2;
+          const slope = cfg.snapToWave
+            ? (waveY(destX + 10, line, amp, time, height, cfg) - waveY(destX - 10, line, amp, time, height, cfg)) / 20
+            : 0;
+          
+          const rot = Math.atan(slope) * (180 / Math.PI) * m;
+          const tx = pullX * m;
+          const ty = (wy - sy) * m;
+          const scaleX = 1 + m * cfg.stretch;
+          const scaleY = 1 - m * 0.94;
+          const blur = p * 3;
+
+          el.style.transform = `translate3d(${tx.toFixed(2)}px, ${ty.toFixed(2)}px, 0) rotate(${rot.toFixed(2)}deg) scale(${scaleX.toFixed(3)}, ${scaleY.toFixed(3)})`;
+          el.style.opacity = String(1 - m * 0.75);
+          el.style.filter = blur > 0.05 ? `blur(${blur.toFixed(2)}px)` : "";
         }
       }
 
-      rafId = requestAnimationFrame(frame);
+      rafId = requestAnimationFrame(loop);
     }
 
-    /* ---- Ereignisse ------------------------------------------------------- */
-    function onScroll() {
-      if (!enabled) return;
-      targetWarp = 1;
-      clearTimeout(stopTimer);
-      stopTimer = setTimeout(() => {
-        targetWarp = 0;
-      }, cfg.stopDelay);
-    }
+    function onScroll() {}
 
     function onResize() {
-      resizeCanvas();
-      measured = false;
+      sizeCanvas();
+      cacheBounds();
       setEnabled(shredAllowed());
     }
 
-    resizeCanvas();
-    collectElements();
+    scroller = findScroller();
+    sizeCanvas();
+    cacheBounds();
     setEnabled(shredAllowed());
 
-    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    if (scroller && scroller !== window) scroller.addEventListener("scroll", onScroll, { passive: true });
     reduceQuery.addEventListener("change", onResize);
 
-    /* Tab-Wechsel, nachgeladene Bilder, aufklappende Panels — alles ändert
-       die Positionen. Neu eingehängte Elemente werden ebenfalls erfasst. */
-    const observer = new MutationObserver(() => {
-      collectElements();
-    });
-    observer.observe(warp, { childList: true, subtree: true });
-
-    const resizeObserver = new ResizeObserver(() => {
-      measured = false;
-    });
-    resizeObserver.observe(warp);
-
-    rafId = requestAnimationFrame(frame);
+    requestAnimationFrame(() => cacheBounds());
+    rafId = requestAnimationFrame(loop);
 
     return () => {
       cancelAnimationFrame(rafId);
-      clearTimeout(stopTimer);
-      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", onScroll);
+      if (scroller && scroller !== window) scroller.removeEventListener("scroll", onScroll);
       reduceQuery.removeEventListener("change", onResize);
-      observer.disconnect();
-      resizeObserver.disconnect();
       setEnabled(false);
+      
+      if (audioRef.current) {
+        audioRef.current.ctx.close();
+      }
     };
   }, []);
 
   return (
     <>
-      {/* ---- Der Verzerrungsfilter ------------------------------------------
-          feTurbulence erzeugt ein Rauschbild, feDisplacementMap verschiebt
-          damit die Pixel des Inhalts. `scale` steht in Ruhe auf 0 — die
-          Bildschleife dreht den Wert beim Scrollen hoch. Werte wie in der
-          Vorlage. */}
-      <svg className="wave-shred__defs" aria-hidden="true" focusable="false">
+      {!soundActive && (
+        <button
+          onClick={handleEnableSound}
+          style={{
+            position: 'fixed', bottom: '2rem', right: '2rem', zIndex: 1000,
+            background: WAVE_SHRED.color, color: WAVE_SHRED.background, 
+            border: 'none', padding: '10px 20px', borderRadius: '20px', 
+            cursor: 'pointer', fontFamily: 'inherit', fontWeight: 'bold',
+            boxShadow: '0 4px 15px rgba(0,0,0,0.5)'
+          }}
+        >
+          Enable Audio Experience
+        </button>
+      )}
+
+      <svg className="wave-shred__defs" aria-hidden="true" focusable="false" style={{position: 'absolute', width: 0, height: 0}}>
         <defs>
-          <filter
-            id="wave-shred-warp"
-            x="-100%"
-            y="-100%"
-            width="300%"
-            height="300%"
-          >
-            <feTurbulence
-              ref={turbulenceRef}
-              type="fractalNoise"
-              baseFrequency="0.001 0.15"
-              numOctaves="1"
-              result="noise"
-            />
-            <feDisplacementMap
-              ref={displacementRef}
-              in="SourceGraphic"
-              in2="noise"
-              scale="0"
-              xChannelSelector="R"
-              yChannelSelector="B"
-            />
+          <filter id="wave-shred-warp" x="-100%" y="-100%" width="300%" height="300%" colorInterpolationFilters="sRGB">
+            <feTurbulence ref={turbulenceRef} type="fractalNoise" baseFrequency="0.001 0.15" numOctaves="2" seed="7" result="noise" />
+            <feDisplacementMap ref={displacementRef} in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="B" />
           </filter>
         </defs>
       </svg>
-
-      <canvas className="wave-shred__canvas" ref={canvasRef} aria-hidden="true" />
-
-      <div className="wave-shred__warp" ref={warpRef}>
+      <canvas className="wave-shred__canvas" ref={canvasRef} aria-hidden="true" style={{position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 0, display: 'block'}} />
+      <div className="wave-shred__warp" ref={warpRef} style={{position: 'relative', zIndex: 1, filter: 'url(#wave-shred-warp)', willChange: 'filter', transform: 'translateZ(0)'}}>
         {children}
       </div>
     </>
