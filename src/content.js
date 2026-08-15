@@ -74,8 +74,8 @@ export const nav = {
     ],
     contactEyebrow: "Say Hello",
     email: "thecimal@gmail.com",
-    phone: "+995 511 725 403",
-    address: ["Sound Art & Audio-Visual Performance", "Tehran"],
+    phone: "",
+    address: ["", ""],
     socialEyebrow: "Elsewhere",
     // Profil-URLs (Bandcamp, Vimeo, YouTube) lagen nicht vor — einfach
     // ergänzen: { label: "Bandcamp", href: "https://..." }
@@ -94,22 +94,22 @@ export const hero = {
   posterAlt: "Hintergrund — Platzhalter für Performance-Dokumentation",
 
   // Die zwei riesigen Zeilen. Jeder Buchstabe wird einzeln animiert.
-  headlineTop: "THE",
-  headlineBottom: "CIMAL",
+  headlineTop: "THECIMAL",
+  headlineBottom: "",
 
   // Kleine Infoblöcke rund um die Headline
-  artistLabel: "Artist",
-  founderName: "Behnoud Mohammadi",
-  founderRole: "Sound Artist & Performer",
+  artistLabel: "",
+  founderName: "",
+  founderRole: "",
 
-  contactLabel: "Contact",
-  contactEmail: "thecimal@gmail.com",
-  contactPhone: "+995 511 725 403",
+  contactLabel: "",
+  contactEmail: "",
+  contactPhone: "",
 
-  yearLabel: "Based in",
-  year: "Tehran",
+  yearLabel: "",
+  year: "",
 
-  tagline: "Audio-Visual Performances & Sound Art",
+  tagline: "Musician & Interdisciplinary Sound Artist",
   scrollIndicator: "Scroll",
 };
 
@@ -746,7 +746,7 @@ export const cta = {
 export const footer = {
   logo: "/placeholder/logo.svg",
   logoAlt: "Thecimal",
-  blurb: "Behnoud Mohammadi — Audio-Visual Performances & Sound Art.",
+  blurb: "Thecimal, Muscian & Interdisciplinary Sound Artist.",
 
   // Jede Spalte ist ein Objekt mit Titel und Links.
   columns: [
