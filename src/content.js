@@ -124,10 +124,10 @@ export const statement = {
   text:
     "Behnoud Mohammadi is a Tehran-based sound artist and performer specializing " +
     "in immersive audio-visual experiences that bridge sound, visuals, and " +
-    "technology. Using tools like TouchDesigner, he creates ambient performances " +
+    "technology. he creates ambient performances " +
     "that blend dynamic projections with intricate soundscapes — continuing to " +
     "explore new possibilities in sound, space, and perception.",
-  footnote: "Sound Art & Audio-Visual Performance",
+  footnote: "Sound Installations, Audio Perforamnces",
 };
 
 /* --------------------------------------------------------------------------
@@ -179,17 +179,17 @@ export const missionVision = {
 // speed: 0 = bewegt sich gar nicht, 1 = starker Parallax-Versatz.
 export const missionImages = [
   {
-    src: "https://picsum.photos/seed/mission-1/600/800",
+    src: "src/media/IMG_7519.webp",
     alt: "Platzhalter — Performance-Aufnahme",
     speed: 0.35,
   },
   {
-    src: "https://picsum.photos/seed/mission-2/500/620",
+    src: "src/media/IMG_1081.webp",
     alt: "Platzhalter — Detail einer Klanginstallation",
     speed: 0.9,
   },
   {
-    src: "https://picsum.photos/seed/mission-3/440/560",
+    src: "src/media/IMG_7532.webp",
     alt: "Platzhalter — Studio-Setup",
     speed: 0.6,
   },
