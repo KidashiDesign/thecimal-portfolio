@@ -88,6 +88,14 @@ export default function WaveShred({ children, config }) {
     ctx.resume();
   };
 
+  const handleDisableSound = () => {
+    if (audioRef.current) {
+      audioRef.current.ctx.close();
+      audioRef.current = null;
+    }
+    setSoundActive(false);
+  };
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const warp = warpRef.current;
@@ -353,20 +361,19 @@ export default function WaveShred({ children, config }) {
 
   return (
     <>
-      {!soundActive && (
-        <button
-          onClick={handleEnableSound}
-          style={{
-            position: 'fixed', bottom: '2rem', right: '2rem', zIndex: 1000,
-            background: WAVE_SHRED.color, color: WAVE_SHRED.background, 
-            border: 'none', padding: '10px 20px', borderRadius: '20px', 
-            cursor: 'pointer', fontFamily: 'inherit', fontWeight: 'bold',
-            boxShadow: '0 4px 15px rgba(0,0,0,0.5)'
-          }}
-        >
-          Enable Audio Experience
-        </button>
-      )}
+      <button
+        onClick={soundActive ? handleDisableSound : handleEnableSound}
+        style={{
+          position: 'fixed', bottom: '2rem', right: '2rem', zIndex: 1000,
+          background: soundActive ? WAVE_SHRED.background : WAVE_SHRED.color, 
+          color: soundActive ? WAVE_SHRED.color : WAVE_SHRED.background, 
+          border: `2px solid ${WAVE_SHRED.color}`, padding: '10px 20px', borderRadius: '20px', 
+          cursor: 'pointer', fontFamily: 'inherit', fontWeight: 'bold',
+          boxShadow: '0 4px 15px rgba(0,0,0,0.5)'
+        }}
+      >
+        {soundActive ? "Disable Audio Experience" : "Enable Audio Experience"}
+      </button>
 
       <svg className="wave-shred__defs" aria-hidden="true" focusable="false" style={{position: 'absolute', width: 0, height: 0}}>
         <defs>
