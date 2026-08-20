@@ -13,7 +13,7 @@
   --ink: #f4f1ea; /* Haupttext */
   --ink-dim: #8d8981; /* Nebentext, Labels */
   --line: rgba(244, 241, 234, 0.14); /* Trennlinien */
-  --accent: #cdff4f; /* Akzentfarbe (Buttons, aktive Tabs) */
+  --accent: #ff3366; /* Akzentfarbe (Buttons, aktive Tabs) */
   --accent-ink: #0a0a0b; /* Textfarbe AUF der Akzentfarbe */
 
   /* ---- Schrift -----------------------------------------------------------
