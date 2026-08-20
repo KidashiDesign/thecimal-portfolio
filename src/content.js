@@ -459,7 +459,7 @@ export const projects = {
       href: "",
       image: "src/media/fireflies.webp",
       alt: "Platzhalter — Fireflies Session",
-      thumb: "https://picsum.photos/seed/fireflies-thumb/320/220",
+      thumb: "",
     },
     {
       id: "do-not-hesitate",
