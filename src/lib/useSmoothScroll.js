@@ -21,7 +21,7 @@ export function useSmoothScroll() {
     if (prefersReducedMotion()) return undefined;
 
     const lenis = new Lenis({
-      duration: 1.1, // "Nachlauf" des Scrollens in Sekunden
+      duration: 0.1, // "Nachlauf" des Scrollens in Sekunden
       smoothWheel: true,
       // Touch-Geräte scrollen bewusst nativ (Lenis-Standard): fühlt sich auf
       // dem Handy besser an und spart Akku. Wer das ändern will, setzt hier
