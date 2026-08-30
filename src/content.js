@@ -179,17 +179,17 @@ export const missionVision = {
 // speed: 0 = bewegt sich gar nicht, 1 = starker Parallax-Versatz.
 export const missionImages = [
   {
-    src: "src/media/IMG_7519.webp",
+    src: "/images/IMG_7519.webp",
     alt: "Platzhalter — Performance-Aufnahme",
     speed: 0.35,
   },
   {
-    src: "src/media/IMG_1081.webp",
+    src: "/images/IMG_1081.webp",
     alt: "Platzhalter — Detail einer Klanginstallation",
     speed: 0.9,
   },
   {
-    src: "src/media/IMG_7532.webp",
+    src: "/images/IMG_7532.webp",
     alt: "Platzhalter — Studio-Setup",
     speed: 0.6,
   },
