@@ -12,6 +12,7 @@
 import { useEffect } from "react";
 import WaveShred from "./components/WaveShred";
 import Nav from "./components/Nav";
+import ShaderOverlay from "./components/ShaderOverlay";
 import Hero from "./components/Hero";
 import Statement from "./components/Statement";
 import MissionVision from "./components/MissionVision";
