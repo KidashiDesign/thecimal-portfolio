@@ -595,47 +595,7 @@ export const marquee = {
   durationSeconds: 24,
 };
 
-/* --------------------------------------------------------------------------
-   8. IN HIS OWN WORDS
-   --------------------------------------------------------------------------
-   Statt Kundenstimmen stehen hier Zitate aus Behnouds eigenen Werkbeschreibungen.
-   -------------------------------------------------------------------------- */
-export const testimonials = {
-  eyebrow: "In his own words",
-  moreLabel: "Full CV",
-  moreHref: "https://thecimal.com/cv",
 
-  items: [
-    {
-      quote:
-        "I can't just sit at my laptop and play. This room is a shifting wave of " +
-        "my own reflections, appearing and disappearing like the ghosts of " +
-        "forgotten artists who no longer exist.",
-      name: "Behnoud Mohammadi",
-      role: "Sound and Light Installation, International Drone Day",
-      avatar: "https://picsum.photos/seed/quote-drone-day/240/240",
-      alt: "Porträt",
-    },
-    {
-      quote:
-        "Randomness as a compositional strategy — carefully identifying moments of " +
-        "emergent momentum to shape unstable yet coherent rhythmic structures.",
-      name: "Behnoud Mohammadi",
-      role: "Realtime Generative Music, Revolution Art Space",
-      avatar: "https://picsum.photos/seed/quote-revolution/240/240",
-      alt: "Porträt",
-    },
-    {
-      quote:
-        "Evolving soundscapes invited audiences to experience sound as a fluid, " +
-        "living continuum.",
-      name: "Behnoud Mohammadi",
-      role: "Quanta Continua, Ariana Art Gallery",
-      avatar: "https://picsum.photos/seed/quote-quanta/240/240",
-      alt: "Porträt",
-    },
-  ],
-};
 
 /* --------------------------------------------------------------------------
    9. CTA — "Say Hello"
@@ -653,10 +613,7 @@ export const cta = {
   // Bild-Grid unter der Headline (Hover = leichter Zoom).
   // 4–6 Bilder sehen am ausgewogensten aus.
   images: [
-    { src: "https://picsum.photos/seed/cta-1/600/700", alt: "Performance" },
-    { src: "https://picsum.photos/seed/cta-2/600/700", alt: "Installation" },
-    { src: "https://picsum.photos/seed/cta-3/600/700", alt: "Studio" },
-    { src: "https://picsum.photos/seed/cta-4/600/700", alt: "Live-Set" },
+
   ],
 };
 

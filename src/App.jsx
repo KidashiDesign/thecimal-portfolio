@@ -18,7 +18,6 @@ import Statement from "./components/Statement";
 import MissionVision from "./components/MissionVision";
 import Projects from "./components/Projects";
 import Marquee from "./components/Marquee";
-import Testimonials from "./components/Testimonials";
 import CallToAction from "./components/CallToAction";
 import Footer from "./components/Footer";
 
@@ -55,7 +54,6 @@ export default function App() {
           <MissionVision />
           <Projects />
           <Marquee />
-          <Testimonials />
           <CallToAction />
         </main>
 
