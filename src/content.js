@@ -180,79 +180,20 @@ export const missionVision = {
 export const missionImages = [
   {
     src: "/images/IMG_7519.webp",
-    alt: "Platzhalter — Performance-Aufnahme",
+    alt: "Performance-Aufnahme",
     speed: 0.35,
   },
   {
     src: "/images/IMG_1081.webp",
-    alt: "Platzhalter — Detail einer Klanginstallation",
+    alt: "Detail einer Klanginstallation",
     speed: 0.9,
   },
   {
     src: "/images/IMG_7532.webp",
-    alt: "Platzhalter — Studio-Setup",
+    alt: "Studio-Setup",
     speed: 0.6,
   },
 ];
-
-/* --------------------------------------------------------------------------
-   5. SELECTED FACTS (horizontal, gepinnt)
-   -------------------------------------------------------------------------- */
-export const milestones = {
-  eyebrow: "Selected Facts",
-  headline: "Numbers behind the work",
-
-  // 3–4 Panels funktionieren am besten. Mehr = längere Scroll-Strecke.
-  // `value`  : Zielzahl des Countdowns (nur Ziffern, wird hochgerollt)
-  // `suffix` : hängt hinter der Zahl, z. B. "+", "%", "K"
-  panels: [
-    {
-      value: 30,
-      suffix: "+",
-      year: "Discography",
-      label: "International releases",
-      text:
-        "Singles, collaborative works and mixtapes in the dark ambient genre, " +
-        "released under the names IDFT, Force Ignore, P01ntl355 and havytna.",
-      image: "https://picsum.photos/seed/milestone-releases/900/1200",
-      alt: "Platzhalter — Release-Artwork",
-    },
-    {
-      value: 300,
-      suffix: "+",
-      year: "2017",
-      label: "Audience at TEM Fest",
-      text:
-        "Technical manager and festival advisor for one of the first large-scale " +
-        "festivals dedicated to electronic music in Iran.",
-      image: "https://picsum.photos/seed/milestone-temfest/900/1200",
-      alt: "Platzhalter — Festival-Aufnahme",
-    },
-    {
-      value: 4,
-      suffix: "",
-      year: "Since 2014",
-      label: "Sound & light installations",
-      text:
-        "From the Fibonacci pipe array of V (5) at TADAEX to quad-speaker spatial " +
-        "works at Ariana Art Gallery and International Drone Day.",
-      image: "https://picsum.photos/seed/milestone-installations/900/1200",
-      alt: "Platzhalter — Installationsansicht",
-    },
-    {
-      value: 5,
-      suffix: "",
-      year: "Ongoing",
-      label: "Countries collaborated in",
-      text:
-        "Work and collaborations across Iran, Georgia, Norway, Sweden and the US — " +
-        "from gallery installations to festival stages and record labels.",
-      image: "https://picsum.photos/seed/milestone-collab/900/1200",
-      alt: "Platzhalter — Kollaborations-Aufnahme",
-    },
-  ],
-};
-
 /* --------------------------------------------------------------------------
    6. WORKS (Tabs mit Crossfade + Thumbnail-Strip)
    --------------------------------------------------------------------------
@@ -307,8 +248,8 @@ export const projects = {
         "real time.",
       linkLabel: "Watch on YouTube",
       href: "",
-      image: "src/media/mtkvarze.webp",
-      alt: "Platzhalter — Silver Screen Performance",
+      image: "images/mtkvarze.webp",
+      alt: "Silver Screen Performance",
       thumb: "",
     },
     {
@@ -329,8 +270,8 @@ export const projects = {
         "generators to remain expressive while still musically controllable.",
       linkLabel: "",
       href: "",
-      image: "src/media/RevoGen.webp",
-      alt: "Platzhalter — Revolution Art Space Performance",
+      image: "images/RevoGen.webp",
+      alt: "Revolution Art Space Performance",
       thumb: "",
     },
     {
@@ -348,8 +289,8 @@ export const projects = {
         "the Georgian State Silk Museum.",
       linkLabel: "",
       href: "",
-      image: "src/media/Silk_Musem.webp",
-      alt: "Platzhalter — Silk Museum Performance",
+      image: "images/Silk_Musem.webp",
+      alt: "Silk Museum Performance",
       thumb: "",
     },
     {
@@ -371,8 +312,8 @@ export const projects = {
         "application. Document available upon request.",
       linkLabel: "",
       href: "",
-      image: "src/media/RAVE.webp",
-      alt: "Platzhalter — Forschungsprojekt RAVE",
+      image: "images/RAVE.webp",
+      alt: "Forschungsprojekt RAVE",
       thumb: "",
     },
     {
@@ -395,8 +336,8 @@ export const projects = {
         "engage the audience throughout the event.",
       linkLabel: "Watch on Vimeo",
       href: "",
-      image: "src/media/RevoChris.webp",
-      alt: "Platzhalter — Sound- und Lichtinstallation",
+      image: "images/RevoChris.webp",
+      alt: "Sound- und Lichtinstallation",
       thumb: "",
     },
     {
@@ -416,8 +357,8 @@ export const projects = {
         "experience sound as a fluid, living continuum.",
       linkLabel: "",
       href: "",
-      image: "src/media/Quanta.webp",
-      alt: "Platzhalter — Quanta Continua, Ausstellungsansicht",
+      image: "images/Quanta.webp",
+      alt: "Quanta Continua, Ausstellungsansicht",
       thumb: "",
     },
     {
@@ -438,8 +379,8 @@ export const projects = {
         "Unexplained Sounds Group radio transmissions.",
       linkLabel: "Listen on Bandcamp",
       href: "",
-      image: "src/media/idft_Kandu.webp",
-      alt: "Platzhalter — Kandu Album-Artwork",
+      image: "images/idft_Kandu.webp",
+      alt: "Kandu Album-Artwork",
       thumb: "",
     },
     {
@@ -457,8 +398,8 @@ export const projects = {
         "performance with Einar Stray (Norway) and Sandro Mishelashvili (Georgia).",
       linkLabel: "Watch on YouTube",
       href: "",
-      image: "src/media/fireflies.webp",
-      alt: "Platzhalter — Fireflies Session",
+      image: "images/fireflies.webp",
+      alt: "Fireflies Session",
       thumb: "",
     },
     {
@@ -479,9 +420,9 @@ export const projects = {
         "presented at Limited Access 8 (2019).",
       linkLabel: "Watch on Vimeo",
       href: "",
-      image: "https://picsum.photos/seed/do-not-hesitate-hero/1600/1000",
-      alt: "Platzhalter — Do Not Hesitate, Installationsansicht",
-      thumb: "https://picsum.photos/seed/do-not-hesitate-thumb/320/220",
+      image: "images/DO_NOT_HESITATE.webp",
+      alt: "Do Not Hesitate, Installationsansicht",
+      thumb: "", 
     },
     {
       id: "the-great-gate",
@@ -501,9 +442,9 @@ export const projects = {
         "atmosphere. Documented in the TADAEX 2018 program booklet.",
       linkLabel: "",
       href: "",
-      image: "https://picsum.photos/seed/great-gate-hero/1600/1000",
-      alt: "Platzhalter — The Great Gate Performance",
-      thumb: "https://picsum.photos/seed/great-gate-thumb/320/220",
+      image: "images/the_great_gate.webp",
+      alt: "The Great Gate Performance",
+      thumb: "",
     },
     {
       id: "tem-fest",
@@ -525,9 +466,9 @@ export const projects = {
         "electronic music community.",
       linkLabel: "",
       href: "",
-      image: "https://picsum.photos/seed/tem-fest-hero/1600/1000",
-      alt: "Platzhalter — TEM Fest",
-      thumb: "https://picsum.photos/seed/tem-fest-thumb/320/220",
+      image: "images/tem_fest.webp",
+      alt: "TEM Fest",
+      thumb: "",
     },
     {
       id: "denial",
@@ -545,9 +486,9 @@ export const projects = {
         "and video editing to shape an expressive audiovisual environment.",
       linkLabel: "Watch on Vimeo",
       href: "",
-      image: "https://picsum.photos/seed/denial-hero/1600/1000",
-      alt: "Platzhalter — Denial Performance",
-      thumb: "https://picsum.photos/seed/denial-thumb/320/220",
+      image: "images/denial.webp",
+      alt: "Denial Performance",
+      thumb: "images/denial_thumb.webp",
     },
     {
       id: "paraffin-showcase",
@@ -565,9 +506,9 @@ export const projects = {
         "and digital visual response.",
       linkLabel: "",
       href: "",
-      image: "https://picsum.photos/seed/paraffin-hero/1600/1000",
-      alt: "Platzhalter — Paraffin Showcase",
-      thumb: "https://picsum.photos/seed/paraffin-thumb/320/220",
+      image: "images/paraffin_showcase.webp",
+      alt: "Paraffin Showcase",
+      thumb: "",
     },
     {
       id: "reminiscence",
@@ -589,9 +530,9 @@ export const projects = {
         "sonic realities of daily life in Iran.",
       linkLabel: "Watch on Vimeo",
       href: "",
-      image: "https://picsum.photos/seed/reminiscence-hero/1600/1000",
-      alt: "Platzhalter — Reminiscence, Videostill",
-      thumb: "https://picsum.photos/seed/reminiscence-thumb/320/220",
+      image: "images/reminiscence.webp",
+      alt: "Reminiscence, Videostill",
+      thumb: "",
     },
     {
       id: "winter-mood",
@@ -612,9 +553,9 @@ export const projects = {
         "dynamic visual forms.",
       linkLabel: "Watch on Vimeo",
       href: "",
-      image: "https://picsum.photos/seed/winter-mood-hero/1600/1000",
-      alt: "Platzhalter — Winter Mood Performance",
-      thumb: "https://picsum.photos/seed/winter-mood-thumb/320/220",
+      image: "images/winter_mood.webp",
+      alt: "Winter Mood Performance",
+      thumb: "",
     },
     {
       id: "v-5",
@@ -634,32 +575,11 @@ export const projects = {
         "soundscape.",
       linkLabel: "",
       href: "",
-      image: "https://picsum.photos/seed/v5-hero/1600/1000",
-      alt: "Platzhalter — V (5) Installationsansicht",
-      thumb: "https://picsum.photos/seed/v5-thumb/320/220",
+      image: "images/v5_installation.webp",
+      alt: "V (5) Installationsansicht",
+      thumb: "",
     },
-    {
-      id: "discography",
-      tabLabel: "Discography",
-      title: "Discography & Collaborations",
-      client: "Various international labels",
-      year: "Ongoing",
-      type: "Releases",
-      role: "Producer, Mixing & Mastering",
-      medium: "Singles, collaborative works, mixtapes",
-      tools: [],
-      description:
-        "Produced over 30 international releases across various labels, including " +
-        "singles, collaborative works and mixtapes in the dark ambient genre under " +
-        "the names IDFT, Force Ignore, P01ntl355 and havytna. Also provided mixing " +
-        "and mastering services for local artists, fostering cross-cultural " +
-        "collaboration in experimental sound.",
-      linkLabel: "",
-      href: "",
-      image: "https://picsum.photos/seed/discography-hero/1600/1000",
-      alt: "Platzhalter — Discography",
-      thumb: "https://picsum.photos/seed/discography-thumb/320/220",
-    },
+
   ],
 };
 
@@ -694,7 +614,7 @@ export const testimonials = {
       name: "Behnoud Mohammadi",
       role: "Sound and Light Installation, International Drone Day",
       avatar: "https://picsum.photos/seed/quote-drone-day/240/240",
-      alt: "Platzhalter — Porträt",
+      alt: "Porträt",
     },
     {
       quote:
@@ -703,7 +623,7 @@ export const testimonials = {
       name: "Behnoud Mohammadi",
       role: "Realtime Generative Music, Revolution Art Space",
       avatar: "https://picsum.photos/seed/quote-revolution/240/240",
-      alt: "Platzhalter — Porträt",
+      alt: "Porträt",
     },
     {
       quote:
@@ -712,7 +632,7 @@ export const testimonials = {
       name: "Behnoud Mohammadi",
       role: "Quanta Continua, Ariana Art Gallery",
       avatar: "https://picsum.photos/seed/quote-quanta/240/240",
-      alt: "Platzhalter — Porträt",
+      alt: "Porträt",
     },
   ],
 };
@@ -722,8 +642,8 @@ export const testimonials = {
    -------------------------------------------------------------------------- */
 export const cta = {
   eyebrow: "Bookings & Collaboration",
-  headlineTop: "Say",
-  headlineBottom: "Hello",
+  headlineTop: "Get in",
+  headlineBottom: "Touch",
   text:
     "For performances, installations, sound design or collaboration — write any " +
     "time. The full CV is available at thecimal.com/cv.",
@@ -733,10 +653,10 @@ export const cta = {
   // Bild-Grid unter der Headline (Hover = leichter Zoom).
   // 4–6 Bilder sehen am ausgewogensten aus.
   images: [
-    { src: "https://picsum.photos/seed/cta-1/600/700", alt: "Platzhalter — Performance" },
-    { src: "https://picsum.photos/seed/cta-2/600/700", alt: "Platzhalter — Installation" },
-    { src: "https://picsum.photos/seed/cta-3/600/700", alt: "Platzhalter — Studio" },
-    { src: "https://picsum.photos/seed/cta-4/600/700", alt: "Platzhalter — Live-Set" },
+    { src: "https://picsum.photos/seed/cta-1/600/700", alt: "Performance" },
+    { src: "https://picsum.photos/seed/cta-2/600/700", alt: "Installation" },
+    { src: "https://picsum.photos/seed/cta-3/600/700", alt: "Studio" },
+    { src: "https://picsum.photos/seed/cta-4/600/700", alt: "Live-Set" },
   ],
 };
 

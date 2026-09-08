@@ -16,7 +16,6 @@ import ShaderOverlay from "./components/ShaderOverlay";
 import Hero from "./components/Hero";
 import Statement from "./components/Statement";
 import MissionVision from "./components/MissionVision";
-import Milestones from "./components/Milestones";
 import Projects from "./components/Projects";
 import Marquee from "./components/Marquee";
 import Testimonials from "./components/Testimonials";
@@ -54,7 +53,6 @@ export default function App() {
           <Hero />
           <Statement />
           <MissionVision />
-          <Milestones />
           <Projects />
           <Marquee />
           <Testimonials />
